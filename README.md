@@ -19,7 +19,6 @@ pros::Motor mtr2(2, pros::E_MOTOR_GEARSET_06, true);
 lib::mtrs motorGroup(std::vector<pros::Motor>{mtr1, mtr2});
 
 //differential motor group (motors need to spin diff velocities)
-
 lib::diffy diffyGroup(std::vector<pros::Motor>{mtr1, mtr2});
 ```
 differential motor groups must consist of an even amount of motors. when initializing *2n* motors, it will consider the first *n* motors as paired together, and the second *n* as well. each "pair" of motors can be spun at a different voltage.
