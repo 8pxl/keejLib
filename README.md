@@ -71,7 +71,7 @@ double currHeading = lib::imu.radHeading();
 <font size = "4">**opcontrol**
 </font>
 
-code is pretty self explanatory:
+code is pretty self explanatory, example code follows:
 ![listener](https://user-images.githubusercontent.com/56054380/200656086-fbf8a1fd-9f79-428c-a6e3-d0f86537021d.png)
 
 
