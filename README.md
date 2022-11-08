@@ -67,6 +67,14 @@ double currHeading = lib::imu.radHeading();
 ```
 ---
 
+
+<font size = "4">**opcontrol**
+</font>
+
+code is pretty self explanatory:
+![listener](https://user-images.githubusercontent.com/56054380/200656086-fbf8a1fd-9f79-428c-a6e3-d0f86537021d.png)
+
+
 <font size = "4">**chassis**
 </font>
 ```cpp
@@ -99,3 +107,6 @@ void lib::chassis::drive(double target, double timeout, util::pidConstants const
   chass.stop('b');
 }
 ```
+
+
+
