@@ -16,7 +16,6 @@ namespace util
     class pidConstants;
     class pid;
     class movingAverage;
-    struct action;
     double dtr(double input);
     double rtd(double input);
     double distToPoint(util::coordinate p1, util::coordinate p2);
@@ -262,16 +261,6 @@ class util::movingAverage
             return(average/integral);
         }
 };
-
-struct util::action
-{
-    pros::controller_digital_e_t button;
-    std::function<void(void)> pressed;
-    std::function<void(void)> unpressed;
-
-    action(pros::controller_digital_e_t key, std::function<void(void)> action, std::function<void(void)> defaultAction) : button(key), pressed(action), unpressed(defaultAction){}
-};
-
 
 double util::dtr(double input) //NOLINT
 {
