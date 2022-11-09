@@ -72,7 +72,23 @@ double currHeading = lib::imu.radHeading();
 </font>
 
 code is pretty self explanatory, example code follows:
-![listener](https://user-images.githubusercontent.com/56054380/200656086-fbf8a1fd-9f79-428c-a6e3-d0f86537021d.png)
+
+```cpp
+
+//functions to call
+std::function<void()> intake = [&] {spin(&robot::sekai,127); };
+std::function<void()> puncher = [&] {spin(&robot::sekai,-127); };
+std::function<void()> stopSekai = [&] {stop(&robot::sekai, 'c'); };
+
+//keys to listen to
+lib::controllerButton L1(glb::controller, pros::E_CONTROLLER_DIGITAL_L1);
+
+//pair keys to a functiom
+lib::action onL1(&L1, intake, stopSekai);
+lib::action onLimit(&robot::puncherLimit, puncher, stopSekai);
+
+con.init(std::vector<lib::action> actions{onL1, onLimit});
+```
 
 
 <font size = "4">**chassis**
