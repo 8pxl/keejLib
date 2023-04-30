@@ -32,98 +32,6 @@ double lib::pid::out(double error)
     return(error * constants.p  + integral * constants.i + derivative * constants.d);
 }
 
-// - controller
-enum lib::controller::driveMode
-{
-    arcade,
-    tank
-};
-
-int lib::controller::select(int num, std::vector<std::string> names)
-{
-    int curr = 0;
-    cont -> clear();
-    while(1)
-    {   
-        if(cont -> get_digital_new_press(pros::E_CONTROLLER_DIGITAL_RIGHT))
-        {
-            if (curr != num-1)
-            {
-                curr++;
-            }
-            
-            else
-            {
-                curr = 0;
-            }
-        }
-
-        if(cont -> get_digital_new_press(pros::E_CONTROLLER_DIGITAL_LEFT))
-        {
-            if (curr != 0)
-            {
-                curr--;
-            }
-
-            else
-            {
-                curr = num-1;
-            }
-        }
-
-        if(cont -> get_digital(pros::E_CONTROLLER_DIGITAL_A))
-        {
-            pros::delay(200);
-            return(curr);
-        }
-
-        cont -> print(0, 0, "%s         ", names[curr]);
-        pros::delay(50);
-    }
-}
-
-std::vector<bool> lib::controller::getAll(std::vector<pros::controller_digital_e_t> buttons)
-{
-    std::vector<bool> out;
-    for (pros::controller_digital_e_t button : buttons)
-    {
-        out.push_back(cont -> get_digital(button));
-        out.push_back(cont -> get_digital_new_press(button));
-    }
-    return(out);
-}
-
-//https://www.desmos.com/calculator/puepnlubzh
-double lib::controller::curve(double x, double scale) 
-{
-    return scale == 0 ? x : (pow(2.718, (scale * ((std::fabs(x) - 127))) / 1000 ) * x);
-}
-
-std::vector<double> lib::controller::drive(int direction, lib::controller::driveMode mode)
-{   
-    double lStick = curve(cont -> get_analog(ANALOG_LEFT_Y) * direction, leftCurve);
-    double rStick;
-    switch(mode)
-    {
-        case arcade:
-            rStick = curve(cont ->get_analog(ANALOG_RIGHT_X), rightCurve);
-            return(std::vector<double>{lStick + rStick, lStick - rStick});
-        
-        case tank:
-            rStick = curve(cont -> get_analog(ANALOG_RIGHT_Y), rightCurve);
-            return(std::vector<double>{lStick, rStick});
-    }
-
-    //you shoudlnt be here !
-    return(std::vector<double>{0,0});
-}
-
-void lib::controller::setCurves(double left, double right)
-{
-    leftCurve = left;
-    rightCurve = right;
-}
-
 // - util functions
 double lib::dtr(double input)
 {
@@ -148,7 +56,7 @@ double lib::minError(double target, double current)
     double s = std::min(target,current);
     double diff = b - s;
     
-    return(diff <= 180 ? diff : (360-b) + s);
+    return((diff <= 180 ? diff : (360-b) + s) * dirToSpin(target, current));
 }
 
 
@@ -166,4 +74,39 @@ double lib::sign(double a)
 double lib::hypot(double a, double b)
 {
     return(sqrt(pow(a, 2) + pow(b, 2)));
+}
+
+double lib::dist(coordinate a, coordinate b)
+{
+    return(hypot(b.x - a.x, b.y - a.y));
+}
+
+double lib::absoluteAngleToPoint(lib::coordinate pos, lib::coordinate point)
+{
+    double t;
+
+    try
+    { 
+        t = atan2(point.x - pos.x, point.y - pos.y);
+    }
+
+    catch(...)
+    {
+        t = PI/2;
+    }
+    
+    t = lib::rtd(t);
+
+    // -270 - 90
+    
+    // if(t < -180)
+    // {
+    //     t = 90 + (270 - fabs(t));
+    // }
+
+    //-180 - 180
+
+    t = -t;
+    t = t >= 0 ? t :  180 + 180+t;
+    return (t);
 }

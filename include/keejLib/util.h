@@ -39,7 +39,8 @@ namespace lib
 
     struct coordinate{double x,y;};
 
-    struct robotConstants{double horizTrack, vertTrack, trackDia, maxSpeed, fwdAccel, fwdDecel, revAccel, revDecel;};
+    struct robotConstants{double horizTrack, vertTrack, trackDia, maxSpeed, fwdAccel, fwdDecel, revAccel, revDecel, ip10mstomvolt;};
+    //inches per 10 ms to motor volt
 
     class timer
     {
@@ -65,28 +66,6 @@ namespace lib
             double out(double error);
     };
 
-    class controller
-    {
-        private:
-            pros::Controller* cont;
-            double leftCurve, rightCurve;
-
-        public:
-            controller(pros::Controller& cont) : cont(&cont) {}
-
-            enum driveMode{};
-
-            int select(int num, std::vector<std::string> names);
-            
-            std::vector<bool> getAll(std::vector<pros::controller_digital_e_t> buttons);
-
-            double curve(double x, double scale);
-
-            std::vector<double> drive(int direction, controller::driveMode mode);
-
-            void setCurves(double left, double right);
-    };
-
     double dtr(double input);
     double rtd(double input);
     int dirToSpin(double target,double currHeading);
@@ -94,4 +73,6 @@ namespace lib
     double imuToRad(double heading);
     double sign(double a);
     double hypot(double a, double b);
+    double dist(coordinate a, coordinate b);
+    double absoluteAngleToPoint(lib::coordinate pos, lib::coordinate point)
 }
