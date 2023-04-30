@@ -22,6 +22,18 @@ namespace lib
             
             void updatePos();
             void initTracking();
-            void drive(double target, double timeout, lib::pidConstants constants);
+
+            //1dpid
+            void pidDrive(double target, double timeout, lib::pidConstants constants);
+            void pidTurn(double target, double timeout, lib::pidConstants constants);
+            void arcTurn(double target, double radius, double timeout, int dir, lib::pidConstants constants); 
+
+            //1dmp
+            std::vector<double> asymTrapezoidalProfile(double dist, double maxSpeed, double accel, double decel);
+            void profiledDrive(double target, int endDelay);
+
+            //2dpid
+            void driveAngle(double target, double heading, double timeout, lib::pidConstants lCons, lib::pidConstants acons);
+            void pidMoveTo(lib::coordinate target, double timeout, lib::pidConstants lConstants, lib::pidConstants rConstants, double rotationBias);
     };
 }
