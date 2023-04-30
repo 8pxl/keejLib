@@ -2,8 +2,9 @@
 #include "lib.h"
 
 
-int lib::controller::select(int num, std::vector<std::string> names)
+int lib::controller::select(std::vector<std::string> names)
 {
+    int num = names.size();
     int curr = 0;
     cont -> clear();
     while(1)

@@ -19,7 +19,7 @@ namespace lib
                 tank
             };
 
-            int select(int num, std::vector<std::string> names);
+            int select(std::vector<std::string> names);
             
             std::vector<bool> getAll(std::vector<pros::controller_digital_e_t> buttons);
 
