@@ -29,6 +29,7 @@ namespace lib
             using mtrs::mtrs;
 
             void spinDiffy(double rvolt, double lvolt);
+            void spinDiffy(std::vector<double> voltages);
             std::vector<double> getDiffy();
     };
 

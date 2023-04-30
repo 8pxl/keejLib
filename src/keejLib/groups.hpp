@@ -90,6 +90,17 @@ void lib::diffy::spinDiffy(double rvolt, double lvolt)
     }
 }
 
+void lib::diffy::spinDiffy(std::vector<double> voltages) 
+{
+    int half = size/2;
+
+    for (int i=0; i < half; i++)
+    {
+        motors[i].move(voltages[0]);
+        motors[i + half].move(voltages[1]);
+    }
+}
+
 std::vector<double> lib::diffy::getDiffy() 
 {
     double dl = 0;
