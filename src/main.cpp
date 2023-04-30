@@ -1,5 +1,5 @@
 #include "main.h"
-#include "lib.h"
+#include "../include/keejLib/lib.h"
 
 // - globals
 void (*auton)();
