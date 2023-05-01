@@ -1,4 +1,4 @@
-#include "lib.h"
+#include "../include/keejLib/lib.h"
 
 std::vector<double> lib::chassis::asymTrapezoidalProfile(double dist, double maxSpeed, double accel, double decel)
 {

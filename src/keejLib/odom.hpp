@@ -1,11 +1,10 @@
 #pragma once
-
-#include "lib.h"
+#include "lib.hpp"
 
 void lib::chassis::updatePos()
 {
   double currRotation = imu -> get_heading();
-  double deltaRotation = lib::dirToSpin(prevRotation, currRotation) * lib::minError(currRotation, prevRotation);
+  double deltaRotation = lib::minError(prevRotation, currRotation);
 
   prevRotation = currRotation;
 

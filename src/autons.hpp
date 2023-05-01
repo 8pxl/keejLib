@@ -4,7 +4,7 @@
 using namespace robot;
 using namespace lib;
 
-//turns
+//example turn constants
 pidConstants ninety
 {
     .p = 5.9, 
@@ -26,6 +26,7 @@ void test2()
     chass.pidTurn(90, 1500, ninety);
 }
 
+//creates list of auton function pointers and names - useful for auton selector
 lib::atns autons = 
 {
     {test1, test2}, 

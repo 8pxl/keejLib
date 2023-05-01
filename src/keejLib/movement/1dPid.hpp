@@ -1,5 +1,5 @@
 #pragma once
-#include "lib.h"
+#include "../include/keejLib/lib.h"
 
 void lib::chassis::pidDrive(double target, double timeout, lib::pidConstants constants)
 {

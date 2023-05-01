@@ -5,3 +5,4 @@
 #include "groups.h"
 #include "chassis.h"
 #include "util.h"
+#include "controller.h"

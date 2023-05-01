@@ -1,7 +1,6 @@
 #pragma once
-
 #include "main.h"
-#include "lib.h"
+#include "lib.hpp"
 
 pros::motor_brake_mode_e lib::mtrs::returnBrakeType(char brakeMode) 
 {

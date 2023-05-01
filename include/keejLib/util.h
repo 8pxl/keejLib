@@ -3,7 +3,10 @@
 #include <cmath>
 #include <vector>
 #include "main.h"
+
 #define PI 3.14159265358979323846
+#define ALLBUTTONS {pros::E_CONTROLLER_DIGITAL_L1, pros::E_CONTROLLER_DIGITAL_L2, pros::E_CONTROLLER_DIGITAL_R1, pros::E_CONTROLLER_DIGITAL_R2, pros::E_CONTROLLER_DIGITAL_UP, pros::E_CONTROLLER_DIGITAL_DOWN, pros::E_CONTROLLER_DIGITAL_LEFT, pros::E_CONTROLLER_DIGITAL_RIGHT, pros::E_CONTROLLER_DIGITAL_X, pros::E_CONTROLLER_DIGITAL_B, pros::E_CONTROLLER_DIGITAL_Y, pros::E_CONTROLLER_DIGITAL_A}
+typedef void(*fptr)();
 
 namespace lib
 {
@@ -41,6 +44,8 @@ namespace lib
 
     struct robotConstants{double horizTrack, vertTrack, trackDia, maxSpeed, fwdAccel, fwdDecel, revAccel, revDecel, ip10mstomvolt;};
     //inches per 10 ms to motor volt
+    struct atns{std::vector<fptr> autonsList; std::vector<std::string> names; };
+
 
     class timer
     {
@@ -74,5 +79,5 @@ namespace lib
     double sign(double a);
     double hypot(double a, double b);
     double dist(coordinate a, coordinate b);
-    double absoluteAngleToPoint(lib::coordinate pos, lib::coordinate point)
+    double absoluteAngleToPoint(lib::coordinate pos, lib::coordinate point);
 }

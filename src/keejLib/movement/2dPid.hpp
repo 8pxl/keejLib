@@ -1,5 +1,5 @@
 #pragma once
-#include "lib.h"
+#include "../include/keejLib/lib.h"
 
 void lib::chassis::driveAngle(double target, double heading, double timeout, lib::pidConstants lCons, lib::pidConstants acons)
 {
@@ -38,7 +38,6 @@ void lib::chassis::driveAngle(double target, double heading, double timeout, lib
 
 void lib::chassis::pidMoveTo(lib::coordinate target, double timeout, lib::pidConstants lConstants, lib::pidConstants rConstants, double rotationBias)
 {
-  //init
   lib::timer timeoutTimer;
   lib::pid linearController(lConstants, 0);
   lib::pid rotationController(rConstants, 0);
