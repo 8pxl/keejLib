@@ -21,7 +21,7 @@ void opcontrol()
 {
 	while (true) 
 	{
-		// driver();
+		driver();
 		pros::delay(20);
 	}
 }

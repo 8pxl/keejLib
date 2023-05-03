@@ -34,6 +34,9 @@ namespace lib
 
             //2dpid
             void driveAngle(double target, double heading, double timeout, lib::pidConstants lCons, lib::pidConstants acons);
-            void pidMoveTo(lib::coordinate target, double timeout, lib::pidConstants lConstants, lib::pidConstants rConstants, double rotationBias);
+            std::vector<double> pidMTPVel(lib::coordinate target, double rotationBias, lib::pid* lCont, lib::pid* rCont);
+            void pidMoveTo(lib::coordinate target, double timeout, lib::pidConstants lConstants, lib::pidConstants 
+            rConstants, double rotationBias);
+            void boomerang(lib::coordinate target, double timeout, double dLead, double thetaEnd, double rotationBias, lib::pidConstants lConstants, lib::pidConstants rConstants);
     };
 }
