@@ -1,6 +1,5 @@
 #pragma once
-
-#include "../../include/keejLib/util.h"
+#include "../include/keejLib/lib.h"
 
 // - timer
 lib::timer::timer()
@@ -73,12 +72,12 @@ double lib::hypot(double a, double b)
     return(sqrt(pow(a, 2) + pow(b, 2)));
 }
 
-double lib::dist(coordinate a, coordinate b)
+double lib::dist(const point& a, const point& b)
 {
     return(hypot(b.x - a.x, b.y - a.y));
 }
 
-double lib::absoluteAngleToPoint(lib::coordinate pos, lib::coordinate point)
+double lib::absoluteAngleToPoint(const point& pos, const point& point)
 {
     double t;
 
