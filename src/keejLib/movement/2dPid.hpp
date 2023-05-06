@@ -36,7 +36,7 @@ void lib::chassis::driveAngle(double target, double heading, double timeout, lib
   chass -> stop('b');
 }
 
-std::vector<double> lib::chassis::pidMTPVel(lib::coordinate target, double rotationBias, lib::pid* lCont, lib::pid* rCont)
+std::vector<double> lib::chassis::pidMTPVel(const lib::point& target, double rotationBias, lib::pid* lCont, lib::pid* rCont)
 {
     double linearError = dist(pos,target);
     double currHeading = imu -> get_heading();
@@ -50,7 +50,7 @@ std::vector<double> lib::chassis::pidMTPVel(lib::coordinate target, double rotat
     return(std::vector<double> {rVel, lVel});
 } 
 
-void lib::chassis::pidMoveTo(lib::coordinate target, double timeout, lib::pidConstants lConstants, lib::pidConstants rConstants, double rotationBias)
+void lib::chassis::pidMoveTo(const lib::point& target, double timeout, lib::pidConstants lConstants, lib::pidConstants rConstants, double rotationBias)
 {
   lib::timer timeoutTimer;
   lib::pid linearController(lConstants, 0);
@@ -60,8 +60,7 @@ void lib::chassis::pidMoveTo(lib::coordinate target, double timeout, lib::pidCon
   chass -> stop('b');
 }
 
-
-void lib::chassis::boomerang(lib::coordinate target, double timeout, double dLead, double thetaEnd, double rotationBias, lib::pidConstants lConstants, lib::pidConstants rConstants)
+void lib::chassis::boomerang(const lib::point& target, double timeout, double dLead, double thetaEnd, double rotationBias, lib::pidConstants lConstants, lib::pidConstants rConstants)
 {
   lib::timer timeoutTimer;
   lib::pid linearController(lConstants, 0);
@@ -70,7 +69,7 @@ void lib::chassis::boomerang(lib::coordinate target, double timeout, double dLea
   while (timeoutTimer.time() < timeout)
   {
     double h = hypot(pos.x - target.x, pos.y - target.y);
-    lib::coordinate carrot = {target.x - (h * sin(thetaEnd) * dLead), target.y - (h * cos(thetaEnd) * dLead)};
+    lib::point carrot = {target.x - (h * sin(thetaEnd) * dLead), target.y - (h * cos(thetaEnd) * dLead)};
     chass -> spinDiffy(lib::chassis::pidMTPVel(carrot, rotationBias, &linearController, &rotationController));
   }
 }

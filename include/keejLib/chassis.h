@@ -10,7 +10,7 @@ namespace lib
             pros::Imu* imu;
             pros::ADIEncoder* horizTracker = nullptr;
             pros::ADIEncoder* vertTracker = nullptr;
-            lib::coordinate pos = {0,0};
+            point pos = {0,0};
             lib::robotConstants constants;
             pros::Task* odomTask = nullptr;
             double prevRotation = 0;
@@ -34,9 +34,9 @@ namespace lib
 
             //2dpid
             void driveAngle(double target, double heading, double timeout, lib::pidConstants lCons, lib::pidConstants acons);
-            std::vector<double> pidMTPVel(lib::coordinate target, double rotationBias, lib::pid* lCont, lib::pid* rCont);
-            void pidMoveTo(lib::coordinate target, double timeout, lib::pidConstants lConstants, lib::pidConstants 
+            std::vector<double> pidMTPVel(const point& target, double rotationBias, lib::pid* lCont, lib::pid* rCont);
+            void pidMoveTo(const point& target, double timeout, lib::pidConstants lConstants, lib::pidConstants 
             rConstants, double rotationBias);
-            void boomerang(lib::coordinate target, double timeout, double dLead, double thetaEnd, double rotationBias, lib::pidConstants lConstants, lib::pidConstants rConstants);
+            void boomerang(const point& target, double timeout, double dLead, double thetaEnd, double rotationBias, lib::pidConstants lConstants, lib::pidConstants rConstants);
     };
 }
