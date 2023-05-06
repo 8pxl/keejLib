@@ -40,7 +40,9 @@ namespace lib
 
     struct pidConstants{double p,i,d,tolerance,integralThreshold, maxIntegral;};
 
-    struct coordinate{double x,y;};
+    struct point{double x,y;};
+
+    typedef point vec;
 
     struct robotConstants{double horizTrack, vertTrack, trackDia, maxSpeed, fwdAccel, fwdDecel, revAccel, revDecel, ip10mstomvolt;};
     //inches per 10 ms to motor volt
@@ -71,6 +73,21 @@ namespace lib
             double out(double error);
     };
 
+    class cubicBezier 
+    {
+        private:
+            point p0, p1, p2, p3;
+            
+        public:
+            cubicBezier(const point& p0, const point& p1, const point& p2, const point& p3);
+
+            point evaluate(double t);
+            vec evaluateDerivative(double t);
+            double length(int reso);
+            double x(double t);
+            double y(double t);
+    };
+
     double dtr(double input);
     double rtd(double input);
     int dirToSpin(double target,double currHeading);
@@ -78,6 +95,6 @@ namespace lib
     double imuToRad(double heading);
     double sign(double a);
     double hypot(double a, double b);
-    double dist(coordinate a, coordinate b);
-    double absoluteAngleToPoint(lib::coordinate pos, lib::coordinate point);
+    double dist(const point& a, const point& b);
+    double absoluteAngleToPoint(const point& pos, const point& point);
 }
