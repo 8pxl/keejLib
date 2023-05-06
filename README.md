@@ -3,7 +3,8 @@
 - motor wrapper + groups (support for diffy groups)
 - piston wrapper + groups
 - controller wrapper
-- ez pid
+- ezpz generic pid
+- muy util (very useful!)
 - chassis class
   - pid drive
   - pid turn
@@ -12,3 +13,4 @@
   - odom
   - 1d motion profiling (asym trapezoidal)
   - pid move to point
+  - boomerang controller
