@@ -24,7 +24,7 @@ the best lib for pros fr
 to use keejLib, simply clone this repository. everything is under the `lib` namespace.
 
 **motor groups**
-
+-
 ---
 
 motor groups can be initilized using the port number of each motor.
@@ -34,9 +34,9 @@ to initlize the two types of motor groups:
 lib::mtrs intakeMtrs({1,2});
 lib::diffy chassMtrs({3,4,5,6});
 ```
-`mtrs` allows for the grouping together of any ammount of motors. it provides methods to spin, stop, etc. each motor in a group. 
+`lib::mtrs` allows for the grouping together of any ammount of motors. it provides methods to spin, stop, etc. each motor in a group. 
 
-`lib::diffy` is a differential motor group. it allows the spinning of each half of the motor group with distinctive velocities. these inherit all methods from normal motor groups. 
+`lib::diffy` is a differential motor group. it allows the spinning of each half of the motor group with distinctive velocities. an obvious usecase for this is a chassis, where you dont always want both sides to spin with the same velocity. diffy groups inherit all methods from normal motor groups. 
 
 diffy motor groups must consist of an even amount of motors. when initializing *2n* motors, the first *n* motors are paired together, the second *n* the same.
 
@@ -44,22 +44,21 @@ diffy motor groups must consist of an even amount of motors. when initializing *
 **usage**
 
 ```cpp
-intakeMtrs.spin(127);
-
-chassMtrs.spin(90);
+intakeMtrs.spin(127); //normal mtr group
+chassMtrs.spin(90); //diffy mtr group
 chassMtrs.spinDiffy(127,-100);
 ```
 
 `spin` methods work for both types of groups, however the `spinDiffy` method is unique to differential groups. in this example, one half of the chassis would be given 127 volts, the other half -100.
 
 **controller**
-
+-
 ---
-keejLib also extends the controller through an additional wrapper class. this adds concise acessing of the values of each button on the controller, built in selecting tool, and simple drive curves with support for arcade and tank.
+keejLib also extends the controller through an additional wrapper class. this adds concise acessing of the values of each button on the controller, a built in selecting tool, and simple drive curves with support for arcade and tank.
 
 to initilize a `lib::controller` object, simply pass in an existing controller to the constructor, like so
 ```cpp
-  pros::Controller controller(pros::E_CONTROLLER_MASTER);
+pros::Controller controller(pros::E_CONTROLLER_MASTER);
 lib::controller controller(glb::controller);
 ```
 lets take a look at some example driver code written using these features. (2496R Worlds 2023)
@@ -125,7 +124,7 @@ this demonstrates how the value of each button can be acessed utilizng the defin
 
 an additional `drive` method helps to simplify code to move the robot using the joysticks. 
 
-the `drive` method will return a vector of length two, which will contain the output speeds to the left and right sides of the drivebase given the controller inputs. this method takes in the direction to drive (1,-1) and the type of drive (`util::controller::arcade`, `util::controller::tank`)
+the `drive` method will return a vector of length two, which will contain the output voltages to the left and right sides of the drivebase given the controller inputs. this method takes in the direction to drive (1,-1) and the type of drive method (`util::controller::arcade`, `util::controller::tank`)
 
 the vector return value pairs perfectly with the `spinDiffy` method in diffy groups (which was previously talked about) all in all, drive code for the robot can be reduced to just one line:
 
@@ -138,4 +137,4 @@ aditionally, keejLib allows for the option to 'curve' the joystick inputs using 
 ```cpp
 robot::controller.setCurves(0, 8);
 ```
-will set the t value to be used for the left and right joysticks. (higher value results in a greater degree of input scaling)
+this will set the t value to be used for the left and right joysticks. (higher value results in a greater degree of input scaling)
