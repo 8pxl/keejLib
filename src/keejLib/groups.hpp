@@ -7,7 +7,7 @@ pros::motor_brake_mode_e lib::mtrs::returnBrakeType(char brakeMode)
     return brakeMode == 'c' ? pros::E_MOTOR_BRAKE_COAST : brakeMode == 'b' ? pros::E_MOTOR_BRAKE_BRAKE : pros::E_MOTOR_BRAKE_HOLD;
 }
 
-lib::mtrs::mtrs(const std::vector<int> & ports)
+lib::mtrs::mtrs(const std::vector<int> ports)
 {
     for (int i : ports)
     {
@@ -78,25 +78,20 @@ void lib::mtrs::reset()
     }
 }
 
-void lib::diffy::spinDiffy(double rvolt, double lvolt) 
-{
-    int half = size/2;
-
-    for (int i=0; i < half; i++)
+void lib::diffy::spinDiffy(std::vector<int> ports, std::vector<int> lookup_){
+    for (int i : ports)
     {
-        motors[i].move(rvolt);
-        motors[i + half].move(lvolt);
+        pros::Motor temp(std::abs(i), i < 0 ? true : false);
+        motors.push_back(temp);
     }
+    lookup = lookup_;
 }
 
 void lib::diffy::spinDiffy(std::vector<double> voltages) 
 {
-    int half = size/2;
-
-    for (int i=0; i < half; i++)
+    for (int i=0; i < voltages.size(); i++)
     {
-        motors[i].move(voltages[0]);
-        motors[i + half].move(voltages[1]);
+        motors[i].move(voltages[lookup[i]]);
     }
 }
 
