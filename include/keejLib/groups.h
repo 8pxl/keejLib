@@ -13,7 +13,7 @@ namespace lib
             int size;
 
         public:
-            mtrs(const std::vector<int> & ports);
+            mtrs(const std::vector<int> ports);
 
             void spin(double volts);
             void stop(char brakeMode);
@@ -26,9 +26,8 @@ namespace lib
     class diffy : public mtrs
     {
         public:
-            using mtrs::mtrs;
-
-            void spinDiffy(double rvolt, double lvolt);
+            diffy(std::vector<int> ports, std::vector<int> lookup);
+            
             void spinDiffy(std::vector<double> voltages);
             std::vector<double> getDiffy();
     };
