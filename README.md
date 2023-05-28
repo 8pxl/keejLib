@@ -208,5 +208,19 @@ an overview of each utility feature (view util.h for detailed arguments):
 
 now for the non trivial stuff...
 
+**pid class**
+-
 
+the `pid` class
+
+    class pid;
+
+    class cubicBezier;
+
+
+    int dirToSpin(double target,double currHeading);
+
+    double minError(double target, double current);
+
+    double dist(const point& a, const point& b);
   
