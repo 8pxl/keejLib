@@ -25,8 +25,10 @@ namespace lib
 
     class diffy : public mtrs
     {
+        protected:
+            std::vector<int> lookup;
         public:
-            diffy(std::vector<int> ports, std::vector<int> lookup);
+            diffy(std::vector<int> ports, std::vector<int> lookup_);
             
             void spinDiffy(std::vector<double> voltages);
             std::vector<double> getDiffy();
