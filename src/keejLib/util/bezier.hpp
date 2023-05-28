@@ -1,8 +1,7 @@
 #pragma once
 #include "../include/keejLib/lib.h"
 
-lib::cubicBezier::cubicBezier(const point& p0, const point& p1, const point& p2, const point& p3)
-        : p0(p0), p1(p1), p2(p2), p3(p3) {}
+lib::cubicBezier::cubicBezier(const point& p0, const point& p1, const point& p2, const point& p3) : p0(p0), p1(p1), p2(p2), p3(p3) {}
 
 lib::point lib::cubicBezier::evaluate(double t) 
 {
@@ -18,7 +17,7 @@ lib::point lib::cubicBezier::evaluate(double t)
 
 lib::vec lib::cubicBezier::evaluateDerivative(double t) 
 {
-    double omt = 1 - t;
+    double omt = 1 - t; 
     double omt2 = omt * omt;
     double t2 = t * t;
     double x = 3 * omt2 * (p1.x - p0.x) + 6 * omt * t * (p2.x - p1.x) + 3 * t2 * (p3.x - p2.x);
@@ -37,4 +36,9 @@ double lib::cubicBezier::length(int reso = 100)
         prev = curr;
     }
     return result;
+}
+
+double lib::cubicBezier::maxDeriv()
+{
+    return (std::max(hypot(evaluateDerivative(0.00000001)), hypot(evaluateDerivative(1))));
 }

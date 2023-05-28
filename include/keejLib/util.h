@@ -86,6 +86,7 @@ namespace lib
             double length(int reso);
             double x(double t);
             double y(double t);
+            double maxDeriv();
     };
 
     double dtr(double input);
@@ -95,6 +96,7 @@ namespace lib
     double imuToRad(double heading);
     double sign(double a);
     double hypot(double a, double b);
+    double hypot(lib::point a);
     double dist(const point& a, const point& b);
     double absoluteAngleToPoint(const point& pos, const point& point);
 }

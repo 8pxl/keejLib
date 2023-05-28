@@ -15,6 +15,16 @@ pidConstants ninety
     .maxIntegral = 20
 }; 
 
+pidConstants fortyfive
+{
+    .p = 5.9, 
+    .i = 0.6, 
+    .d = 70, 
+    .tolerance = 0.05, 
+    .integralThreshold = 1.1, 
+    .maxIntegral = 20
+}; 
+
 
 void test1()
 {
@@ -24,6 +34,7 @@ void test1()
 void test2()
 {
     chass.pidTurn(90, 1500, ninety);
+    chass.pidTurn(45, 1500, fortyfive);
 }
 
 //creates list of auton function pointers and names - useful for auton selector

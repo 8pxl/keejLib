@@ -3,6 +3,9 @@
 //include all lib files
 #include "../include/keejLib/lib.h"
 
+//i <33 zhepei wang
+#include "../include/calc/rootFinder.hpp"
+
 //movement
 #include "movement/1dMotionProfiling.hpp"
 #include "movement/1dPid.hpp"

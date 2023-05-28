@@ -1,7 +1,7 @@
 # keejLib !!
 the best lib for pros fr
 
-**features**
+<font size = 6>**features** </font>
 -
 ---
 - motor wrapper + groups (support for diffy groups)
@@ -23,9 +23,12 @@ the best lib for pros fr
 -
 to use keejLib, simply clone this repository. everything is under the `lib` namespace.
 
-**motor groups**
+<font size = 6>**hardware abstractions**</font>
 -
 ---
+
+**motor groups**
+-
 
 motor groups can be initilized using the port number of each motor.
 
@@ -36,7 +39,7 @@ lib::diffy chassMtrs({3,4,5,6});
 ```
 `lib::mtrs` allows for the grouping together of any ammount of motors. it provides methods to spin, stop, etc. each motor in a group. 
 
-`lib::diffy` is a differential motor group. it allows the spinning of each half of the motor group with distinctive velocities. an obvious usecase for this is a chassis, where you dont always want both sides to spin with the same velocity. diffy groups inherit all methods from normal motor groups. 
+`lib::diffy` is a differential motor group. it allows the spinning of each half of the motor group with distinctive velocities. an obvious use case for this is a chassis, where you dont always want both sides to spin with the same velocity. diffy groups inherit all methods from normal motor groups. 
 
 diffy motor groups must consist of an even amount of motors. when initializing *2n* motors, the first *n* motors are paired together, the second *n* the same.
 
@@ -51,6 +54,21 @@ chassMtrs.spinDiffy(127,-100);
 
 `spin` methods work for both types of groups, however the `spinDiffy` method is unique to differential groups. in this example, one half of the chassis would be given 127 volts, the other half -100.
 
+**piston groups**
+-
+similarly, a seperate piston group was also created. although the need to pair multiple pistsons together is not very needed, the toggle method of the piston class is very useful.
+
+piston groups are not initilized with the port number, but instead by passing in an exisiting `pros::ADIDigitalOut` object.
+
+```cpp
+  pros::ADIDigitalOut piston('B');
+  lib::pis tsukasa({piston}, false);
+```
+
+the piston contructor also takes in an additional boolean to indicate the starting value of the piston. the state of the piston will be set to this starting value.
+
+`toggle`, `getState, and setState` methods do as their names suggest.
+
 **controller**
 -
 ---
@@ -58,8 +76,8 @@ keejLib also extends the controller through an additional wrapper class. this ad
 
 to initilize a `lib::controller` object, simply pass in an existing controller to the constructor, like so
 ```cpp
-pros::Controller controller(pros::E_CONTROLLER_MASTER);
-lib::controller controller(glb::controller);
+pros::Controller controller_pros(pros::E_CONTROLLER_MASTER);
+lib::controller controller_lib(controller_pros);
 ```
 lets take a look at some example driver code written using these features. (2496R Worlds 2023)
 
@@ -138,3 +156,72 @@ aditionally, keejLib allows for the option to 'curve' the joystick inputs using 
 robot::controller.setCurves(0, 8);
 ```
 this will set the t value to be used for the left and right joysticks. (higher value results in a greater degree of input scaling)
+
+<font size = 6>**utility**</font>
+-
+---
+an overview of each utility feature (view util.h for detailed arguments):
+
+- `struct pidConstants`
+
+  holds constants for a pid controller.
+- `struct point`
+
+
+  holds two doubles.
+
+- `typedef point vec`
+
+  allias for point struct, for code clarity.
+
+- `struct robotConstants`
+    
+    holds constants for robot, used when initializing a `chassis` object
+
+- `struct atns`
+- 
+    holds a list of auton ptrs and a list of names.
+
+- `class cubicBezier`
+
+  class to reprezent a cubicBezier given 4 points
+
+- `double dtr()`
+
+  converts degrees to radians
+- `double rtd()`
+
+  converts radians to degrees
+
+- `double sign()`
+
+  returns 1 if positive, -1 otherwise.
+  
+
+- `double hypot()`
+
+  hyoptenuse given 2 side lengths. has support for passing in 2 numbers or a `lib::point`
+
+- `double absoluteAngleToPoint()`
+
+  returns the angle between two points using inverse tangent
+
+now for the non trivial stuff...
+
+
+**pid class**
+-
+
+the `pid` class
+
+    class pid;
+
+    class cubicBezier;
+
+
+    int dirToSpin(double target,double currHeading);
+
+    double minError(double target, double current);
+
+    double dist(const point& a, const point& b);
+  

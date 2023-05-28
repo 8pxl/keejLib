@@ -72,6 +72,11 @@ double lib::hypot(double a, double b)
     return(sqrt(pow(a, 2) + pow(b, 2)));
 }
 
+double lib::hypot(lib::point a)
+{
+    return(sqrt(pow(a.x, 2) + pow(a.y, 2)));
+}
+
 double lib::dist(const point& a, const point& b)
 {
     return(hypot(b.x - a.x, b.y - a.y));
