@@ -273,20 +273,17 @@ an overview of each utility feature (view util.h for detailed arguments):
 now for the non trivial stuff...
 
 
-**pid class**
+**pid**
 -
 
 
-the `pid` class
+the `pid` class aims to create a reusable implementation of the pid controller (porportional integral derivative). it requires initializing using `pidConstants` and an initial error (which can generally be set to zero) once initilized. use the `out` method and pass in the current error to get the output of the PID control loop. 
 
 
    class pid;
 
 
    class cubicBezier;
-
-
-
 
    int dirToSpin(double target,double currHeading);
 
