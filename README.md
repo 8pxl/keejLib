@@ -197,7 +197,15 @@ this will set the t value to be used for the left and right joysticks. (higher v
 one issue that is often encountered is to have a quick and concise way to get user input. although this can be done using the brain screen, i've found it most efficient to use the controller.
 
 
-the `select` method
+the `select` method aims to add an easy way to select between any number of options. it does this by displaying each option one at a time on the controller screen, the options can be cycled using the arrow buttons on the controller, pressing the `a` button selects the current options.
+
+the `select` method takes for input a list of names to display, and returns the index of the name selected.
+
+for example:
+
+```cpp
+int color = robot::controller.select({"blue", "red"});`
+```
 
 
 
@@ -228,46 +236,43 @@ an overview of each utility feature (view util.h for detailed arguments):
 
 - `struct robotConstants`
   
-   holds constants for robot, used when initializing a `chassis` object
+ holds constants for robot, used when initializing a `chassis` object
 
 
 - `struct atns`
--
-   holds a list of auton function pointers and a list of names.
+
+ holds a list of auton function pointers and a list of names.
 
 
 - `class cubicBezier`
-
 
  class to represent a cubicBezier given 4 points
 
 
 - `double dtr()`
 
-
  converts degrees to radians
+
 - `double rtd()`
-
-
+  
  converts radians to degrees
-
 
 - `double sign()`
 
-
  returns 1 if positive, -1 otherwise.
-
 
 - `double hypot()`
 
-
- hypotenuse given 2 side lengths. has support for passing in 2 numbers or a `lib::point`
+hypotenuse given 2 side lengths. has support for passing in 2 numbers or a `lib::point`
 
 
 - `double absoluteAngleToPoint()`
 
-
  returns the angle between two points using inverse tangent
+
+- `double dist()`
+
+  returns the distance between two `point`s
 
 
 now for the non trivial stuff...
@@ -279,19 +284,30 @@ now for the non trivial stuff...
 
 the `pid` class aims to create a reusable implementation of the pid controller (porportional integral derivative). it requires initializing using `pidConstants` and an initial error (which can generally be set to zero) once initilized. use the `out` method and pass in the current error to get the output of the PID control loop. 
 
+example usage:
+```cpp
+  lib::pid pidController(constants, target);
+  while true
+  {
+    double error = //get error somehow;
+    double output = pidController.out(error);
+  }
+```
+when passing error into the pid controller, it internally keeps track of the values needed to compute derivatve and integral.
 
-   class pid;
+**bezier**
+-
+keejLib also provides support to create cubic bezier curves. these curves are defined using 4 points. the bezier class has to evaluate the curve and its derivative at a given t value. 
 
+the implemented method to approximate the length of the curve consists of subdividng the curve into an inputted ammount of straight line segments, and taking the summation. however this method is computationally slow, it is reccomended that another method be implemented. (on the todo list!)
 
-   class cubicBezier;
+**turn helper**
+-
 
-   int dirToSpin(double target,double currHeading);
+the `dirToSpin` function takes the robots current heading and the robots desired heading as input, and ouputs 1 or -1 if the robot should spin clockwise or counterclockwise to reach the desired heading quickest.
 
+the `minError` function takes the same inputs as the previous function, however it returns the minimum angluar error between the two.
 
-   double minError(double target, double current);
-
-
-   double dist(const point& a, const point& b);
 
 
 
