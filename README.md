@@ -193,20 +193,21 @@ this will set the t value to be used for the left and right joysticks. (higher v
 
 **controller - select**
 
+note - this method is blocking.
 
 one issue that is often encountered is to have a quick and concise way to get user input. although this can be done using the brain screen, i've found it most efficient to use the controller.
 
 
-the `select` method aims to add an easy way to select between any number of options. it does this by displaying each option one at a time on the controller screen, the options can be cycled using the arrow buttons on the controller, pressing the `a` button selects the current options.
+the `select` method aims to add an easy way to select between any number of options. it does this by displaying each option one at a time on the controller screen, the options can be cycled using the arrow buttons on the controller, pressing the `a` button selects the current options. 
 
 the `select` method takes for input a list of names to display, and returns the index of the name selected.
 
 for example:
 
 ```cpp
-int color = robot::controller.select({"blue", "red"});`
+int color = robot::controller.select({"blue", "red", "green"});`
 ```
-
+this would initially display "blue" on the controller screen, upon pressing the right arrow key, the value displayed would change to "red", as expected. upon presssing "a" on the controller, the current option (red) will be selected, and the function will return 1. if instead "green" was selcted, 2 would be returned.
 
 
 
@@ -301,13 +302,74 @@ keejLib also provides support to create cubic bezier curves. these curves are de
 
 the implemented method to approximate the length of the curve consists of subdividng the curve into an inputted ammount of straight line segments, and taking the summation. however this method is computationally slow, it is reccomended that another method be implemented. (on the todo list!)
 
-**turn helper**
+**turn helpers**
 -
 
 the `dirToSpin` function takes the robots current heading and the robots desired heading as input, and ouputs 1 or -1 if the robot should spin clockwise or counterclockwise to reach the desired heading quickest.
 
 the `minError` function takes the same inputs as the previous function, however it returns the minimum angluar error between the two.
 
+**timer**
+-
 
+the timer function alows the user to create multiple timers to keep track of how much time has elapsed. think of it more like a stopwatch function.
 
+to use:
+```cpp
+lib::timer t1;
+int timeElapsed;
+//do stuff
+timeElapsed = t1.time();
+t1.reset();
+```
+the `reset` method sets the time to 0.
 
+<font size = 6>**chassis**</font>
+-
+---
+
+there is a seperate class that handles all the movement for the chassis of the robot. to initialize:
+```cpp
+pros::Imu imu(5);
+lib::diffy chassMtrs({1,2,3,4});
+
+lib::chassis chass
+(
+    chassMtrs, 
+    imu, 
+    {6, 8}, 
+    {
+        .horizTrack = 0, 
+        .vertTrack = 0,
+        .trackDia = 0,
+        .maxSpeed = 0,
+        .fwdAccel = 0,
+        .fwdDecel =  0,
+        .revAccel =  0,
+        .revDecel = 0,
+        .velToVolt = 0
+    }
+);
+```
+the constructor takes for input:
+- an existing `lib::diffy` object containing the chassis motors 
+- an exisiting `pros::Imu` object
+- a list of encoder ports (currently only supports 2)
+- a `lib::robotConstants` instance containing all the robbot constants
+
+**robot constants**
+
+the robot constants needed are as follows. distance units do not matter as long as they stay consistent
+
+for odom:
+- horizTrack (distance to center of horizontal tracking wheel)
+- vertTrack 
+- trackDia (tracking wheel radius)
+
+for motion profiling:
+- maxSpeed (distance / 10ms) 
+- fwdAccel (distance / 10ms^2)
+- fwdDecel (different acceleration and decceleration rates may want to be used)
+- revAccel (different constants depending on the direction the robot is traveling)
+- revDecel
+- velToVolt (conversion factor. distance / 10ms -> voltage applied to motor)
