@@ -46,7 +46,7 @@ void lib::chassis::profiledDrive(double target, int endDelay = 500)
   chass -> reset();
   for (int i = 0; i < profile.size(); i++)
   {
-    chass -> spin(profile[i] * constants.ip10mstomvolt * sign);
+    chass -> spin(profile[i] * constants.velToVolt * sign);
     pros::delay(10);
   }
   chass -> stop('b');

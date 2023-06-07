@@ -4,10 +4,10 @@
 // - timer
 lib::timer::timer()
 {
-    start();
+    reset();
 }
 
-void lib::timer::start()
+void lib::timer::reset()
 {
     startTime = pros::millis();
 }

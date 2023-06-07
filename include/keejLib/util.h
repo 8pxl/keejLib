@@ -44,7 +44,7 @@ namespace lib
 
     typedef point vec;
 
-    struct robotConstants{double horizTrack, vertTrack, trackDia, maxSpeed, fwdAccel, fwdDecel, revAccel, revDecel, ip10mstomvolt;};
+    struct robotConstants{double horizTrack, vertTrack, trackDia, maxSpeed, fwdAccel, fwdDecel, revAccel, revDecel, velToVolt;};
     //inches per 10 ms to motor volt
     struct atns{std::vector<fptr> autonsList; std::vector<std::string> names; };
 
@@ -54,7 +54,7 @@ namespace lib
         public:
             int startTime = 0;
             timer();
-            void start();
+            void reset();
             int time();
     };
 

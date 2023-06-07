@@ -28,7 +28,7 @@ namespace robot
             .fwdDecel =  0,
             .revAccel =  0,
             .revDecel = 0,
-            .ip10mstomvolt = 0
+            .velToVolt = 0
         }
     );
 }
