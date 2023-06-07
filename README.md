@@ -198,7 +198,7 @@ note - this method is blocking.
 one issue that is often encountered is to have a quick and concise way to get user input. although this can be done using the brain screen, i've found it most efficient to use the controller.
 
 
-the `select` method aims to add an easy way to select between any number of options. it does this by displaying each option one at a time on the controller screen, the options can be cycled using the arrow buttons on the controller, pressing the `a` button selects the current options. 
+the `select` method aims to add an easy way to select between any number of options. it does this by displaying each option one at a time on the controller screen, the options can be cycled using the arrow buttons on the controller, pressing the `a` button selects the current option. 
 
 the `select` method takes for input a list of names to display, and returns the index of the name selected.
 
