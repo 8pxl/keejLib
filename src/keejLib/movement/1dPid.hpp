@@ -44,7 +44,33 @@ void lib::chassis::arcTurn(double target, double radius, double timeout, int dir
     double lvel = ratio * rvel;
 
     if(lib::sign(dir) == 1) chass -> spinDiffy(rvel, lvel);
+    else chass -> spinDiffy(-lvel, -rvel);
 
+    pros::delay(10);
+  }
+  chass -> stop('b');
+}
+
+void lib::chassis::eulerTurn(double theta, double rate, double timeout, int dir, lib::pidConstants constants)
+{
+  double curvature = 0;
+  lib::timer timer;
+  lib::pid controller(constants, 0);
+
+  while(timer.time() < timeout)
+  {
+    curvature += rate;
+    double curr = imu -> get_heading();
+    double sl = theta * (1/curvature + this -> constants.vertTrack);
+    double sr = theta * (1/curvature - this -> constants.vertTrack);
+    double ratio = sl/sr;
+
+    double vel = controller.out(lib::minError(theta, curr));
+    vel = std::abs(vel) >= 127 ? (127 * lib::sign(vel)) : vel;
+    double rvel = (2 * vel) / (ratio+1);
+    double lvel = ratio * rvel;
+
+    if(lib::sign(dir) == 1) chass -> spinDiffy(rvel, lvel);
     else chass -> spinDiffy(-lvel, -rvel);
 
     pros::delay(10);

@@ -27,6 +27,7 @@ namespace lib
             void pidDrive(double target, double timeout, lib::pidConstants constants);
             void pidTurn(double target, double timeout, lib::pidConstants constants);
             void arcTurn(double target, double radius, double timeout, int dir, lib::pidConstants constants); 
+            void eulerTurn(double theta, double rate, double timeout, int dir, lib::pidConstants constants);
 
             //1dmp
             std::vector<double> asymTrapezoidalProfile(double dist, double maxSpeed, double accel, double decel);
