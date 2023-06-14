@@ -40,15 +40,30 @@ namespace lib
 
     struct pidConstants{double p,i,d,tolerance,integralThreshold, maxIntegral;};
 
-    struct point{double x,y;};
-
-    typedef point vec;
-
     struct robotConstants{double horizTrack, vertTrack, trackDia, maxSpeed, fwdAccel, fwdDecel, revAccel, revDecel, velToVolt;};
-    //inches per 10 ms to motor volt
+    //distance per 10 ms to motor volt
     struct atns{std::vector<fptr> autonsList; std::vector<std::string> names; };
 
+    class point
+    {
+        public:
+            double x, y;
 
+            double mag();
+
+            void operator+=(double num);
+
+            void operator+=(const point& p);
+
+            void operator-=(double num);
+
+            void operator-=(const point& p);
+
+            void operator*=(double num);
+    };
+
+    typedef point vec;
+    
     class timer
     {
         public:
@@ -89,6 +104,21 @@ namespace lib
             double maxDeriv();
     };
 
+    class linearPath
+    {
+        private:
+            std::vector<point> points;
+            int length;
+
+        public:
+            linearPath(std::vector<point> points);
+
+            void smooth();
+            int len();
+            point at(int index);
+            point last();
+    };
+
     double dtr(double input);
     double rtd(double input);
     int dirToSpin(double target,double currHeading);
@@ -96,7 +126,7 @@ namespace lib
     double imuToRad(double heading);
     double sign(double a);
     double hypot(double a, double b);
-    double hypot(lib::point a);
+    // double hypot(lib::point a);
     double dist(const point& a, const point& b);
     double absoluteAngleToPoint(const point& pos, const point& point);
 }
