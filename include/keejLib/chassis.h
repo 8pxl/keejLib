@@ -39,5 +39,10 @@ namespace lib
             void pidMoveTo(const point& target, double timeout, lib::pidConstants lConstants, lib::pidConstants 
             rConstants, double rotationBias);
             void boomerang(const point& target, double timeout, double dLead, double thetaEnd, double rotationBias, lib::pidConstants lConstants, lib::pidConstants rConstants);
+
+            //pp
+            lib::point targetPoint(lib::linearPath path, int lookAhead, int lineLookAhead, int lineIndex);
+            void moveToPurePursuit(lib::linearPath path, double lookAhead, int lineLookAhead, int finalTimeout, lib::pidConstants lConstants, lib::pidConstants rConstants, double rotationBias);
+
     };
 }
