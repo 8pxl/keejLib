@@ -1,6 +1,44 @@
 #pragma once
 #include "../include/keejLib/lib.h"
 
+// - point
+
+double lib::point::mag()
+{
+    return(sqrt(pow(this -> x, 2) + pow(this -> y, 2)));
+}
+
+void lib::point::operator+=(double num)
+{
+    this -> x += num;
+    this -> y += num;
+}
+
+void lib::point::operator+=(const point& p)
+{
+    this -> x += p.x;
+    this -> y += p.y;
+}
+
+void lib::point::operator-=(double num)
+{
+    this -> x -= num;
+    this -> y -= num;
+}
+
+void lib::point::operator-=(const point& p)
+{
+    this -> x -= p.x;
+    this -> y -= p.y;
+}
+
+void lib::point::operator*=(double num)
+{
+    this -> x *= num;
+    this -> y *= num;
+}
+
+
 // - timer
 lib::timer::timer()
 {
@@ -70,11 +108,6 @@ double lib::sign(double a)
 double lib::hypot(double a, double b)
 {
     return(sqrt(pow(a, 2) + pow(b, 2)));
-}
-
-double lib::hypot(lib::point a)
-{
-    return(sqrt(pow(a.x, 2) + pow(a.y, 2)));
 }
 
 double lib::dist(const point& a, const point& b)
