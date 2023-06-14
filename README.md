@@ -178,7 +178,7 @@ the vector return value pairs perfectly with the `spinDiffy` method in diffy gro
 
 
 ```cpp
-   chass.spinDiffy(robot::controller.drive(1, util::controller::arcade)
+chass.spinDiffy(robot::controller.drive(1, util::controller::arcade)
 ```
 
 
@@ -198,7 +198,7 @@ note - this method is blocking.
 one issue that is often encountered is to have a quick and concise way to get user input. although this can be done using the brain screen, i've found it most efficient to use the controller.
 
 
-the `select` method aims to add an easy way to select between any number of options. it does this by displaying each option one at a time on the controller screen, the options can be cycled using the arrow buttons on the controller, pressing the `a` button selects the current option. 
+the `select` method aims to add an easy way to select between any number of options. it does this by displaying each option one at a time on the controller screen, the options can be cycled using the arrow buttons on the controller, pressing the `a` button selects the current option                          . 
 
 the `select` method takes for input a list of names to display, and returns the index of the name selected.
 
@@ -373,3 +373,8 @@ for motion profiling:
 - revAccel (different constants depending on the direction the robot is traveling)
 - revDecel
 - velToVolt (conversion factor. distance / 10ms -> voltage applied to motor)
+
+<font size = 6>**control algs!**</font>
+-
+---
+
