@@ -44,7 +44,7 @@ double lib::cubicBezier::length(int reso = 100)
 //https://arc.net/e/8C306DBF-9273-4476-B4AF-A33BE6ADB8EF
 double lib::cubicBezier::maxDeriv()
 {
-    return (std::max(hypot(evaluateDerivative(0.00000001)), hypot(evaluateDerivative(1))));
+    return (std::max(evaluateDerivative(0.00000001).mag(), evaluateDerivative(1).mag()));
 }
 
 lib::linearPath::linearPath(std::vector<point> points)
