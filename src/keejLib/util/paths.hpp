@@ -38,7 +38,32 @@ double lib::cubicBezier::length(int reso = 100)
     return result;
 }
 
+//assumes the patlinearPathb.
+//either that or add these coefficens to the cubic solver (i do not want to do that)
+//https://www.desmos.com/calculator/kbbuvzn3xb
+//https://arc.net/e/8C306DBF-9273-4476-B4AF-A33BE6ADB8EF
 double lib::cubicBezier::maxDeriv()
 {
     return (std::max(hypot(evaluateDerivative(0.00000001)), hypot(evaluateDerivative(1))));
+}
+
+lib::linearPath::linearPath(std::vector<point> points)
+{
+    this -> points = points;
+    this -> length = points.size();
+}
+
+int lib::linearPath::len()
+{
+    return (this -> length);
+}
+
+lib::point lib::linearPath::at(int index)
+{
+    return(this -> points[index]);
+}
+
+lib::point lib::linearPath::last()
+{
+    return(this -> points[(this -> length) -1]);
 }
