@@ -10,6 +10,7 @@
 #include "movement/1dMotionProfiling.hpp"
 #include "movement/1dPid.hpp"
 #include "movement/2dPid.hpp"
+#include "movement/pursuit.hpp"
 
 //misc wrappers
 #include "chassis.hpp"
