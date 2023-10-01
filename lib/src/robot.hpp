@@ -14,6 +14,7 @@ namespace robot
 {
     lib::diffy chassMtrs({1,2,3,4});
     lib::controller controller(glb::controller);
+    lib::mtrs intake({5});
     lib::chassis chass
     (
         chassMtrs, 

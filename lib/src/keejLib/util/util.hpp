@@ -132,11 +132,6 @@ double lib::absoluteAngleToPoint(const point& pos, const point& point)
     t = lib::rtd(t);
 
     // -270 - 90
-    
-    // if(t < -180)
-    // {
-    //     t = 90 + (270 - fabs(t));
-    // }
 
     //-180 - 180
 

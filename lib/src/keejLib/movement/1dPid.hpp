@@ -1,16 +1,17 @@
 #pragma once
 #include "../include/keejLib/lib.h"
 
-void lib::chassis::pidDrive(double target, double timeout, lib::pidConstants constants)
+lib::pid lib::chassis::pidDrive(double target, double timeout, lib::pidConstants constants, char brake = 'b')
 {
   lib::timer timer;
   lib::pid pidController(constants, target);
   chass -> reset();
   while(timer.time() < timeout) chass -> spin(pidController.out(target - chass -> getRotation()));
-  chass -> stop('b');
+  chass -> stop(brake);
+  return (pidController);
 }
 
-void lib::chassis::pidTurn(double target, double timeout, lib::pidConstants constants)
+lib::pid lib::chassis::pidTurn(double target, double timeout, lib::pidConstants constants, char brake = 'b')
 {
   lib::timer timer;
   lib::pid pidController(constants, target);
@@ -19,7 +20,29 @@ void lib::chassis::pidTurn(double target, double timeout, lib::pidConstants cons
     double vel = pidController.out(lib::minError(target, imu -> get_heading()));
     chass -> spinDiffy(vel, -vel);
   }
-  chass -> stop('b');
+  chass -> stop(brake);
+  return (pidController);
+}
+
+lib::pid lib::chassis::pidDrive(double target, double timeout, char brake, lib::pid cont)
+{
+  lib::timer timer;
+  chass -> reset();
+  while(timer.time() < timeout) chass -> spin(cont.out(target - chass -> getRotation()));
+  chass -> stop(brake);
+  return (cont);
+}
+
+lib::pid lib::chassis::pidTurn(double target, double timeout, char brake, lib::pid cont)
+{
+  lib::timer timer;
+  while(timer.time() < timeout)
+  {
+    double vel = cont.out(lib::minError(target, imu -> get_heading()));
+    chass -> spinDiffy(vel, -vel);
+  }
+  chass -> stop(brake);
+  return (cont);
 }
 
 //TODO: make radius actual units lol
@@ -39,8 +62,8 @@ void lib::chassis::arcTurn(double target, double radius, double timeout, int dir
   {
     curr = imu -> get_heading();
     double vel = controller.out(lib::minError(target, curr));
-    vel = std::abs(vel) >= 127 ? (127 * lib::sign(vel)) : vel;
     double rvel = (2 * vel) / (ratio+1);
+    rvel = std::abs(rvel) >= 127 ? (127 * lib::sign(rvel)) : rvel;
     double lvel = ratio * rvel;
 
     if(lib::sign(dir) == 1) chass -> spinDiffy(rvel, lvel);

@@ -24,8 +24,11 @@ namespace lib
             void initTracking();
 
             //1dpid
-            void pidDrive(double target, double timeout, lib::pidConstants constants);
-            void pidTurn(double target, double timeout, lib::pidConstants constants);
+            lib::pid pidDrive(double target, double timeout, lib::pidConstants constants, char brake);
+            lib::pid pidTurn(double target, double timeout, lib::pidConstants constants, char brake);
+            lib::pid pidDrive(double target, double timeout, char brake, lib::pid cont);
+            lib::pid pidTurn(double target, double timeout, char brake, lib::pid cont);
+
             void arcTurn(double target, double radius, double timeout, int dir, lib::pidConstants constants); 
             void eulerTurn(double theta, double rate, double timeout, int dir, lib::pidConstants constants);
 

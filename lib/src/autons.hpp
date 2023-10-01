@@ -35,6 +35,9 @@ void test2()
 {
     chass.pidTurn(90, 1500, ninety);
     chass.pidTurn(45, 1500, fortyfive);
+    auto c = chass.pidDrive(1000, 500, ninety, 'c');
+    intake.spin(127);
+    chass.pidDrive(1000,500, 'b', c);
 }
 
 //creates list of auton function pointers and names - useful for auton selector

@@ -4,7 +4,7 @@
 #include "../include/keejLib/lib.h"
 
 //i <33 zhepei wang
-#include "../include/calc/rootFinder.hpp"
+// #include "../include/calc/rootFinder.hpp"
 
 //movement
 #include "movement/1dMotionProfiling.hpp"
