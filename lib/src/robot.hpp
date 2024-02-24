@@ -24,6 +24,16 @@ namespace robot
             .horizTrack = 0, 
             .vertTrack = 0,
             .trackDia = 0,
+        },
+        {
+            .maxSpeed = 0,
+            .fwdAccel = 0,
+            .fwdDecel =  0,
+            .revAccel =  0,
+            .revDecel = 0,
+            .velToVolt = 0,
+        },
+        {
             .maxSpeed = 0,
             .fwdAccel = 0,
             .fwdDecel =  0,

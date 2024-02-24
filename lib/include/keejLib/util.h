@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <vector>
+#include <set>
 #include "main.h"
 
 #define PI 3.14159265358979323846
@@ -37,10 +38,12 @@ namespace lib
         A = 22,
         NA = 23 
     };
+    enum odomType {twoIME, threeEncoder};
 
     struct pidConstants{double p,i,d,tolerance,integralThreshold, maxIntegral;};
 
-    struct robotConstants{double horizTrack, vertTrack, trackDia, maxSpeed, fwdAccel, fwdDecel, revAccel, revDecel, velToVolt;};
+    struct robotConstants{double horizTrack, vertTrack, trackDia;};
+    struct accelConstants{double maxSpeed, fwdAccel, fwdDecel, revAccel, revDecel, velToVolt;};
     //distance per 10 ms to motor volt
     struct atns{std::vector<fptr> autonsList; std::vector<std::string> names; };
 
@@ -86,6 +89,7 @@ namespace lib
             pid(pidConstants cons, double error) : constants(cons), prevError(error){}
 
             double out(double error);
+            double getDerivative();
     };
 
     class cubicBezier 

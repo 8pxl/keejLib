@@ -19,6 +19,15 @@ void autonomous() {auton();}
 
 void opcontrol() 
 {
+	pros::ADIDigitalOut p1('A');
+	pros::ADIDigitalOut p2('B');
+	lib::pis pistons({p1,p2}, true);
+
+	pistons.toggle();
+	if (pistons.getState()) {
+		pistons.setState(false);
+	}
+
 	while (true) 
 	{
 		driver();

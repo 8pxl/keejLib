@@ -11,8 +11,9 @@ lib::mtrs::mtrs(const std::vector<int> & ports)
 {
     for (int i : ports)
     {
-        pros::Motor temp(std::abs(i), i < 0 ? true : false);
+        pros::Motor temp(std::abs(i), pros::E_MOTOR_GEARSET_06, i < 0 ? true : false);
         motors.push_back(temp);
+        temp.set_encoder_units(pros::E_MOTOR_ENCODER_DEGREES);
     }
     size = ports.size();
 }
@@ -70,6 +71,16 @@ double lib::mtrs::getRotation()
     return(rotation/size);
 }
 
+double lib::mtrs::getEfficiency() 
+{
+    double result = 0;
+    for (auto motor: motors)
+    {
+        result += motor.get_efficiency();
+    }
+    return result / size;
+}
+
 void lib::mtrs::reset() 
 {
     for (int i=0; i < size; i++)
@@ -108,6 +119,7 @@ std::vector<double> lib::diffy::getDiffy()
     
     for (int i=0; i < half; i++)
     {
+        std::cout << motors[0].get_encoder_units() << std::endl;
         dl += motors[i].get_position();
         dr += motors[i + half].get_position();
     }

@@ -16,7 +16,8 @@ namespace lib
             enum driveMode
             {
                 arcade,
-                tank
+                tank,
+                curvature
             };
 
             int select(std::vector<std::string> names);

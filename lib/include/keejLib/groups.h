@@ -21,6 +21,7 @@ namespace lib
             void reset();
             double getSpeed();
             double getRotation();
+            double getEfficiency();
     };
 
     class diffy : public mtrs

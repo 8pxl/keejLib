@@ -66,6 +66,11 @@ double lib::pid::out(double error)
     return(error * constants.p  + integral * constants.i + derivative * constants.d);
 }
 
+double lib::pid::getDerivative() 
+{
+    return derivative;
+}
+
 // - util functions
 double lib::dtr(double input)
 {

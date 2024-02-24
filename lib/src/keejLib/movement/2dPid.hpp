@@ -7,8 +7,8 @@ void lib::chassis::driveAngle(double target, double heading, double timeout, lib
 
   double currHeading = imu -> get_heading();
   double sgn = sign(target);
-  lib::pid linearController(lCons, 0);
-  lib::pid angularController(acons,target);
+  lib::pid linearController(lCons, target);
+  lib::pid angularController(acons,0);
 
   chass -> reset();
 
@@ -17,20 +17,20 @@ void lib::chassis::driveAngle(double target, double heading, double timeout, lib
     currHeading = imu -> get_heading();
     double angularError = lib::minError(heading, currHeading);
 
-    if (angularError < acons.tolerance)
+    if (std::abs(angularError) < acons.tolerance)
     {
-        angularError = 0;
+      angularError = 0;
     }
-
     double va = angularController.out(angularError);
     double vl = linearController.out(target - chass -> getRotation());
+    std::cout << chass -> getRotation() << std::endl;
 
-    if (vl + std::abs(va) > 127)
+    if (std::abs(vl) + std::abs(va) > 127)
     {
-      vl = 127 - std::abs(va);
+      vl = (127 - std::abs(va)) * sign(vl);
     }
 
-    chass -> spinDiffy(vl + (va * sgn),  vl - (va * sgn));
+    chass -> spinDiffy(vl - va, vl + va);
     pros::delay(10);
   }
   chass -> stop('b');
@@ -48,7 +48,7 @@ std::vector<double> lib::chassis::pidMTPVel(const lib::point& target, double rot
     double rVel = (linearVel - (fabs(angularVel) * rotationBias)) + angularVel;
     double lVel = (linearVel - (fabs(angularVel) * rotationBias)) - angularVel;
     return(std::vector<double> {rVel, lVel});
-} 
+}
 
 void lib::chassis::pidMoveTo(const lib::point& target, double timeout, lib::pidConstants lConstants, lib::pidConstants rConstants, double rotationBias)
 {
