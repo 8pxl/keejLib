@@ -1468,7 +1468,7 @@ class Motor_Group {
 	 */
 	virtual std::vector<double> get_temperatures(void);
 
-	private:
+	protected:
 	std::vector<Motor> _motors;
 	pros::Mutex _motor_group_mutex;
 	std::uint8_t _motor_count;
