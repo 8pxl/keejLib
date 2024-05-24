@@ -6,6 +6,8 @@
 
 
 using namespace units;
+using namespace angular_velocity;
+
 namespace keejLib {
     class Exit {
         public:
@@ -32,17 +34,30 @@ namespace keejLib {
     }
     
     struct PidConstants {
-        double p,i,d,f,integralThreshold, maxIntegral;
+        double p,i,d,f,integralThreshold, tolerance, maxIntegral;
     };
     
     
     class Pid {
         private:
             double prevError, error, derivative, integral;
+            PidConstants constants;
         public:
             Pid(){}
+            Pid(PidConstants constants);
             double out(double error);
             double getError();
-            double getDerivaative();
+            double getDerivative();
+    };
+    
+    class VelocityController {
+        private:
+            pros::MotorGroup* mtrs;
+            revolutions_per_minute_t target;
+            Pid controller;
+        public:
+            VelocityController(pros::MotorGroup* mtrs, PidConstants constants);
+            void setVelocity(revolutions_per_minute_t v);
+            void applyVoltage();
     };
 }
