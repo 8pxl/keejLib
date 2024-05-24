@@ -2,6 +2,7 @@
 #include "units.h"
 
 using namespace units::time;
+using namespace units::length;
 
 namespace keejLib {
     class Stopwatch {
@@ -9,8 +10,12 @@ namespace keejLib {
             millisecond_t start;
         public:
             Stopwatch();
-        
             void reset();
             millisecond_t getTime();
+    };
+    
+    struct pt {
+        inch_t x;
+        inch_t y;
     };
 }
