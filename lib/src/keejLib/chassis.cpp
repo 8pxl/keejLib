@@ -1,8 +1,8 @@
-#include "main.h"
 #include "keejlib/lib.hpp"
-#include "pros/motors.hpp"
 
 using namespace keejLib;
+
+DriveTrain::DriveTrain(const std::vector<std::int8_t>& left_ports, const std::vector<std::int8_t>& right_ports) : pros::MotorGroup(concat(left_ports, right_ports)){}
 
 std::vector<std::int8_t> DriveTrain::concat(const std::vector<std::int8_t>& left_ports, const std::vector<std::int8_t>& right_ports) {
     std::vector<std::int8_t> ports(left_ports);
@@ -19,5 +19,3 @@ void DriveTrain::spinVolts(int left, int right) {
     }
     _motor_group_mutex.give();
 }
-
-DriveTrain::DriveTrain(const std::vector<std::int8_t>& left_ports, const std::vector<std::int8_t>& right_ports) : pros::MotorGroup(concat(left_ports, right_ports)){}
