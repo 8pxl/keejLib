@@ -14,6 +14,15 @@ namespace keejLib {
             millisecond_t getTime();
     };
     
+    class EMA {
+       private:
+        double ka, last;
+       public:
+        EMA(double ka);
+        double out(double val);
+        double curr();
+    };
+    
     struct pt {
         inch_t x;
         inch_t y;
