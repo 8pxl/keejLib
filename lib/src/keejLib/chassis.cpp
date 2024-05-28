@@ -1,4 +1,6 @@
-#include "keejlib/lib.hpp"
+#include "keejLib/chassis.h"
+#include "keejlib/lib.h"
+#include <numeric>
 
 using namespace keejLib;
 
@@ -18,4 +20,9 @@ void DriveTrain::spinVolts(int left, int right) {
         _motors[i + half].move_voltage(right);
     }
     _motor_group_mutex.give();
+}
+
+double DriveTrain::getAvgVelocity() {
+    std::vector<double> v = (get_actual_velocities());
+    return (std::reduce(v.begin(), v.end()) / v.size());
 }
