@@ -1,16 +1,12 @@
 #pragma once
 #include "main.h"
-#include "units.h"
 #include "util.h"
-
-using namespace units::length;
-using namespace units::angular_velocity;
 
 namespace keejLib {
     struct ChassConstants {
-        inch_t trackWidth;
-        inch_t trackDia;
-        inch_t wheelDia;
+        double trackWidth;
+        double trackDia;
+        double wheelDia;
         double gearRatio;
     };
     

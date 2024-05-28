@@ -33,25 +33,25 @@ namespace keejLib {
      
     class PID {
         private:
-            E_unit prevError, error;
-            double derivative, integral;
+            double prevError, error, derivative, integral;
             PIDConstants constants;
         public:
             PID(){}
             PID(PIDConstants constants);
-            O_unit out(double error);
-            E_unit getError();
+            double out(double error);
+            double getError();
+            double getDerivative();
     };
     
     class VelocityController {
         private:
             pros::MotorGroup* mtrs;
-            revolutions_per_minute_t target;
+            double target;
             PID pid;
             EMA ema;
         public:
             VelocityController(pros::MotorGroup* mtrs, PIDConstants cons, double ka);
-            void setVelocity(revolutions_per_minute_t v);
+            void setVelocity(double v);
             void applyVoltage();
     };
 }

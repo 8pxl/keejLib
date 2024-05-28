@@ -9,7 +9,7 @@ namespace keejLib {
         if(integral > constants.maxIntegral) integral = constants.maxIntegral;
         derivative = error - prevError;
         prevError = error;
-        return(error * constants.p + integral * constants.i + derivative * constants.d);
+        return(error * constants.kp + integral * constants.ki + derivative * constants.kd + (error * constants.kf));
     }
     
     double PID::getError() {

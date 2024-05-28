@@ -1,17 +1,12 @@
 #pragma once
-#include "units.h"
-
-using namespace units::time;
-using namespace units::length;
-
 namespace keejLib {
     class Stopwatch {
         private:
-            millisecond_t start;
+            double start;
         public:
             Stopwatch();
             void reset();
-            millisecond_t getTime();
+            double getTime();
     };
     
     class EMA {
@@ -24,7 +19,7 @@ namespace keejLib {
     };
     
     struct pt {
-        inch_t x;
-        inch_t y;
+        double x;
+        double y;
     };
 }
