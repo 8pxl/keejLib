@@ -1,5 +1,5 @@
 #include "main.h"
-#include "keejLib/lib.hpp"
+#include "keejLib/lib.h"
 #include "pros/motors.hpp"
 
 // - globals

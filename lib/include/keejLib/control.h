@@ -45,13 +45,12 @@ namespace keejLib {
     
     class VelocityController {
         private:
-            pros::MotorGroup* mtrs;
             double target;
             PID pid;
             EMA ema;
         public:
-            VelocityController(pros::MotorGroup* mtrs, PIDConstants cons, double ka);
+            VelocityController(PIDConstants cons, double ka);
             void setVelocity(double v);
-            void applyVoltage();
+            double getVoltage(double curr);
     };
 }

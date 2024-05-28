@@ -1,4 +1,4 @@
-#include "keejLib/lib.hpp"
+#include "keejLib/lib.h"
 
 namespace keejLib {
     PID::PID(PIDConstants constants) : constants(constants), integral(0){};

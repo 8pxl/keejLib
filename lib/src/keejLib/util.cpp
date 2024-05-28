@@ -1,5 +1,5 @@
 #pragma once
-#include "keejLib/lib.hpp"
+#include "keejLib/lib.h"
 
 using namespace keejLib;
 

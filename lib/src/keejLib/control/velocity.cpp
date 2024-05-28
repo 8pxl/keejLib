@@ -1,17 +1,15 @@
 #pragma once
-#include "keejLib/lib.hpp"
+#include "keejLib/lib.h"
 #include <numeric>
 
 namespace keejLib
 {
-    VelocityController::VelocityController(pros::MotorGroup* mtrs, PIDConstants constants, double ka): mtrs(mtrs), pid(PID(constants)), ema(EMA(ka)) {}
+    VelocityController::VelocityController(PIDConstants constants, double ka): pid(PID(constants)), ema(EMA(ka)) {}
     
     void VelocityController::setVelocity(double v) {target = v;}
     
-    void VelocityController::applyVoltage() {
-        std::vector<double> v = (mtrs -> get_actual_velocities());
-        double curr((std::reduce(v.begin(), v.end()) / v.size()));
+    double VelocityController::getVoltage(double curr) {
         double error = target - curr;
-        mtrs -> move_voltage(pid.out(error));
+        return(pid.out(error));
     }
 } 
