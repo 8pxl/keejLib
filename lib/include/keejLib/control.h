@@ -1,12 +1,6 @@
 #pragma once
 #include "main.h"
 #include "util.h"
-#include "pros/motors.hpp"
-#include "units.h"
-
-
-using namespace units;
-using namespace angular_velocity;
 
 namespace keejLib {
     class Exit {
@@ -19,7 +13,7 @@ namespace keejLib {
             private:
                 Stopwatch* sw;
             public:
-                Timeout(millisecond_t* timeout);
+                Timeout(int timeout);
                 bool exit();
         };
         
@@ -28,35 +22,35 @@ namespace keejLib {
                 double range;
                 Stopwatch* sw;
             public:
-                Range(double range, millisecond_t timeout);
+                Range(double range, int timeout);
                 bool exit(double val);
         };
     }
     
-    struct PidConstants {
-        double p,i,d,f,integralThreshold, tolerance, maxIntegral;
+    struct PIDConstants {
+        double kp, ki, kd, kf, maxIntegral, tolerance, integralThreshold;
     };
-    
-    
-    class Pid {
+     
+    class PID {
         private:
-            double prevError, error, derivative, integral;
-            PidConstants constants;
+            E_unit prevError, error;
+            double derivative, integral;
+            PIDConstants constants;
         public:
-            Pid(){}
-            Pid(PidConstants constants);
-            double out(double error);
-            double getError();
-            double getDerivative();
+            PID(){}
+            PID(PIDConstants constants);
+            O_unit out(double error);
+            E_unit getError();
     };
     
     class VelocityController {
         private:
             pros::MotorGroup* mtrs;
             revolutions_per_minute_t target;
-            Pid controller;
+            PID pid;
+            EMA ema;
         public:
-            VelocityController(pros::MotorGroup* mtrs, PidConstants constants);
+            VelocityController(pros::MotorGroup* mtrs, PIDConstants cons, double ka);
             void setVelocity(revolutions_per_minute_t v);
             void applyVoltage();
     };
