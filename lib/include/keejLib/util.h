@@ -2,11 +2,11 @@
 namespace keejLib {
     class Stopwatch {
         private:
-            double start;
+            int start;
         public:
             Stopwatch();
             void reset();
-            double getTime();
+            int elapsed();
     };
     
     class EMA {

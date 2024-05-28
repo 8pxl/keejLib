@@ -11,7 +11,8 @@ namespace keejLib {
     namespace exit {
         class Timeout : Exit {
             private:
-                Stopwatch* sw;
+                Stopwatch sw;
+                int timeout;
             public:
                 Timeout(int timeout);
                 bool exit();
@@ -20,10 +21,11 @@ namespace keejLib {
         class Range : Exit {
             private:
                 double range;
-                Stopwatch* sw;
+                int timeout;
+                Stopwatch sw;
             public:
                 Range(double range, int timeout);
-                bool exit(double val);
+                bool exit(double error);
         };
     }
     
