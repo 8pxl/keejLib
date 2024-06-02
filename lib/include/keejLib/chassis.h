@@ -26,10 +26,17 @@ namespace keejLib {
             double getAvgVelocity();
     };
     
-    struct prevOdom {
+    struct PrevOdom {
         double vert;
         double horiz;
         double theta;
+    };
+    
+    struct MotionParams {
+        bool async;
+        int timeout;
+        double vMin;
+        Exit exit;
     };
     
     class Chassis {
@@ -43,7 +50,7 @@ namespace keejLib {
             PIDConstants angular;
             Pose pose;
             pros::Task* odomTask = nullptr;
-            prevOdom prev;
+            PrevOdom prev;
         public:
             Chassis(DriveTrain *dt, ChassConstants constants);
             void update();
@@ -52,7 +59,8 @@ namespace keejLib {
             void setLin(PIDConstants linear);
             void setAng(PIDConstants angular);
             
-            void driveAngle(double dist, double angle, bool async, double vMin, Exit exit);
+            void turn(double angle, MotionParams params);
+            void driveAngle(double dist, double angle, MotionParams params);
             // void mtp(double x, double y, double theta, double dLead, double vMin, Exit exit);
     };
 }

@@ -9,7 +9,7 @@ namespace keejLib {
     };
     
     namespace exit {
-        class Timeout : Exit {
+        class Timeout : public Exit {
             private:
                 Stopwatch sw;
                 int timeout;
@@ -18,12 +18,13 @@ namespace keejLib {
                 bool exit();
         };
         
-        class Range : Exit {
+        class Range : public Exit {
             private:
                 double range;
                 int timeout;
                 Stopwatch sw;
             public:
+                Range();
                 Range(double range, int timeout);
                 bool exit(double error);
         };
