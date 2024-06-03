@@ -3,9 +3,15 @@
 #include "util.h"
 
 namespace keejLib {
+    
+    struct exitParams {
+        double error;
+    };
+    
     class Exit {
         public:
-            virtual bool exit();
+            virtual bool exited(exitParams);
+            virtual bool exited();
     };
     
     namespace exit {
@@ -15,7 +21,7 @@ namespace keejLib {
                 int timeout;
             public:
                 Timeout(int timeout);
-                bool exit();
+                bool exited();
         };
         
         class Range : public Exit {
@@ -26,7 +32,7 @@ namespace keejLib {
             public:
                 Range();
                 Range(double range, int timeout);
-                bool exit(double error);
+                bool exited(exitParams params);
         };
     }
     

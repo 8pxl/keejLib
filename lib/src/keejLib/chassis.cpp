@@ -1,5 +1,8 @@
 #include "keejLib/chassis.h"
+#include "keejLib/control.h"
+#include "keejLib/util.h"
 #include "keejlib/lib.h"
+#include "pros/rtos.hpp"
 #include <numeric>
 
 using namespace keejLib;
@@ -26,3 +29,10 @@ double DriveTrain::getAvgVelocity() {
     std::vector<double> v = (get_actual_velocities());
     return (std::reduce(v.begin(), v.end()) / v.size());
 }
+
+double DriveTrain::getAvgPosition() {
+    std::vector<double> v = (get_positions());
+    return (std::reduce(v.begin(), v.end()) / v.size());
+}
+
+Chassis::Chassis(DriveTrain *dt, ChassConstants chassConsts) : dt(dt), chassConsts(chassConsts) {}
