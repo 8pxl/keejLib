@@ -1,4 +1,5 @@
 #include "keejLib/lib.h"
+#include "keejLib/util.h"
 
 using namespace keejLib;
 void Chassis::startTracking() {
@@ -13,11 +14,11 @@ void Chassis::startTracking() {
 }
 
 void Chassis::update() {
-    double currTheta = imu -> get_rotation();
-    double currVert = (vertEnc -> get_position()) * constants.trackDia * M_PI / 360;
-    double currHoriz = (horizEnc -> get_position()) * constants.trackDia * M_PI / 360;
+    Angle currTheta = Angle(imu -> get_rotation(), AngleType::HEADING);
+    double currVert = (vertEnc -> get_position()) * chassConsts.trackDia * M_PI / 360;
+    double currHoriz = (horizEnc -> get_position()) * chassConsts.trackDia * M_PI / 360;
     
-    double dTheta = degToRad(currTheta - prev.theta);
+    Angle dTheta = currTheta - prev.theta;
     double dVert = currVert - prev.vert;
     double dHoriz = currHoriz - prev.horiz;
     
@@ -25,7 +26,7 @@ void Chassis::update() {
     prev.vert = currVert;
     prev.horiz = currHoriz;
     
-    double avgHeading = (prev.theta + currTheta) / 2;
+    Angle avgHeading = (prev.theta + currTheta) / 2;
     pose.heading += dTheta;
     
     double dx = dVert;
@@ -38,15 +39,13 @@ void Chassis::update() {
         locX = dx;
         locY = dy;
     } else {
-        locX = 2 * sin(dTheta / 2) * (dx / dTheta + constants.horizWidth);
-        locY = 2 * sin(dTheta / 2) * (dy / dVert + constants.vertWidth);
+        locX = 2 * sin(dTheta.rad() / 2) * (dx / dTheta.rad() + chassConsts.horizWidth);
+        locY = 2 * sin(dTheta.rad() / 2) * (dy / dVert + chassConsts.vertWidth);
     }
     Pose prevPose = pose;
 
     // update globals
-    pose.pos.x += locY * sin(avgHeading);
-    pose.pos.y += locY * cos(avgHeading);
-    pose.pos.x += locX * -cos(avgHeading);
-    pose.pos.y += locX * sin(avgHeading);
+    pose.pos.x += locY * sin(avgHeading.rad()) + locX * -cos(avgHeading.rad());
+    pose.pos.y += locY * cos(avgHeading.rad()) + locX * sin(avgHeading.rad());
     pose.heading = currTheta;
 }

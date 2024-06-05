@@ -24,12 +24,13 @@ namespace keejLib {
             void spinRight(int volts);
 
             double getAvgVelocity();
+            double getAvgPosition();
     };
     
     struct PrevOdom {
         double vert;
         double horiz;
-        double theta;
+        Angle theta;
     };
     
     struct MotionParams {
