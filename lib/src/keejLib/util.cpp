@@ -14,24 +14,11 @@ double EMA::curr() {
     return last;
 }
 
-int dirToSpin(double target, double current) {
-    double d = (target - current);
-    double diff = d < 0 ? d + 360 : d;
-    return (diff > 180 ? 1 : -1);
+double pt::dist(pt a) {
+    return sqrt(pow(a.x - x, 2) + pow(a.y - y, 2));
 }
 
-double angError(double target, double current) {
-    double b = std::max(target, current);
-    double s = std::min(target, current);
-    double diff = b - s;
-    
-    return((diff <= 180 ? diff : (360-b) + s) * keejLib::dirToSpin(target, current));
+template <typename T>
+int sign(T x) {
+    return(x > 0 ? 1 : -1);
 }
-double degToRad(double deg) {
-    return deg * M_PI / 180;
-}
-
-double radToDeg(double rad) {
-    return rad * 180 / M_PI;
-}
-

@@ -45,9 +45,9 @@ namespace keejLib {
             pros::Imu *imu;
             pros::Rotation *vertEnc;
             pros::Rotation *horizEnc;
-            ChassConstants constants;
-            PIDConstants linear;
-            PIDConstants angular;
+            ChassConstants chassConsts;
+            PIDConstants linConsts;
+            PIDConstants angConsts;
             Pose pose;
             pros::Task* odomTask = nullptr;
             PrevOdom prev;
@@ -59,8 +59,10 @@ namespace keejLib {
             void setLin(PIDConstants linear);
             void setAng(PIDConstants angular);
             
+            double getTheta();
+            std::pair<double, double> pidMTPVel(pt target, double rotationBias, PID* lCont, PID* rCont);
             void turn(double angle, MotionParams params);
             void driveAngle(double dist, double angle, MotionParams params);
-            // void mtp(double x, double y, double theta, double dLead, double vMin, Exit exit);
+            void mtp(pt target, double theta, double dLead, MotionParams params);
     };
 }

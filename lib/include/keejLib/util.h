@@ -30,6 +30,23 @@ namespace keejLib {
         double heading;
     };
     
+    enum AngleType {
+        RAD,
+        DEG,
+        HEADING
+    };
+    class Angle {
+        double angle_s;
+        public:
+            Angle();
+            Angle(double angle, AngleType type);
+            
+            double rad();
+            double deg();
+            double heading();
+            double error(Angle other);
+    };
+    
     template <typename T>
     int sign(T x);
     
