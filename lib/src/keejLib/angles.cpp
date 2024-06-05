@@ -50,6 +50,26 @@ Angle::Angle(double angle, AngleType type) {
     }
 }
 
+Angle Angle::operator+(Angle& other) {
+    return Angle(this -> angle_s + other.angle_s, AngleType::RAD);
+}
+
+void Angle::operator+=(Angle& other) {
+    this -> angle_s += other.angle_s;
+}
+
+Angle Angle::operator-(Angle& other) {
+    return Angle(this -> angle_s - other.angle_s, AngleType::RAD);
+}
+
+Angle Angle::operator/(double b) {
+    return Angle(this -> angle_s / b, AngleType::RAD);
+}
+
+bool Angle::operator==(double b) {
+    return this -> angle_s == b;
+}
+
 double Angle::rad() {
     return angle_s;
 }

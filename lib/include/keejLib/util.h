@@ -25,11 +25,6 @@ namespace keejLib {
         double dist(pt a);
     };
     
-    struct Pose {
-        pt pos;
-        double heading;
-    };
-    
     enum AngleType {
         RAD,
         DEG,
@@ -41,10 +36,21 @@ namespace keejLib {
             Angle();
             Angle(double angle, AngleType type);
             
+            Angle operator+(Angle& other);
+            void operator+=(Angle& other);
+            Angle operator-(Angle& other);
+            Angle operator/(double b);
+            bool operator==(double b);
+            
             double rad();
             double deg();
             double heading();
             double error(Angle other);
+    };
+    
+    struct Pose {
+        pt pos;
+        Angle heading;
     };
     
     template <typename T>
