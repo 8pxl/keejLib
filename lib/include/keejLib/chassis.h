@@ -64,6 +64,6 @@ namespace keejLib {
             std::pair<double, double> pidMTPVel(pt target, double rotationBias, PID* lCont, PID* rCont);
             void turn(double angle, MotionParams params);
             void driveAngle(double dist, double angle, MotionParams params);
-            void mtp(pt target, double theta, double dLead, MotionParams params);
+            void mtp(pose target, double theta, double dLead, MotionParams params);
     };
 }

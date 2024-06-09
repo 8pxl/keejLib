@@ -22,6 +22,8 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params) {
         pros::delay(10);
         return;
     }
+    Angle targ = Angle(angle, HEADING);
+    
     Exit timeout = exit::Timeout(params.timeout);
     PID linCont = PID(this -> linConsts);
     PID angCont = PID(this -> angConsts);
@@ -29,7 +31,7 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params) {
     this -> dt -> tare_position();
     while (params.exit.exited({.error = linError}) || timeout.exited()) {
         linError = dist - (this -> dt -> getAvgPosition());
-        double angularError = angError(angle, imu -> get_heading());
+        double angularError = targ.error(Angle(imu -> get_rotation(), HEADING));
     
         if (std::abs(angularError) < this -> angConsts.tolerance) {
             angularError = 0;
@@ -45,14 +47,14 @@ void Chassis::driveAngle(double dist, double angle, MotionParams params) {
     }
 }
 
-void Chassis::mtp(pt target, double theta, double dLead, MotionParams params) {
+void Chassis::mtp(Pose target, double theta, double dLead, MotionParams params) {
     if (params.async) {
         params.async = false;
         pros::Task task([&]() { mtp(target, theta, dLead, params);});
         pros::delay(10);
         return;
     }
-    
+
     Exit timeout = exit::Timeout(params.timeout);
     PID linCont = PID(this -> linConsts);
     PID angCont = PID(this -> angConsts);

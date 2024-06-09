@@ -2,8 +2,7 @@
 #include "keejLib/lib.h"
 #include <numeric>
 
-namespace keejLib
-{
+using namespace keejLib;
     VelocityController::VelocityController(PIDConstants constants, double ka): pid(PID(constants)), ema(EMA(ka)) {}
     
     void VelocityController::setVelocity(double v) {target = v;}
@@ -12,4 +11,3 @@ namespace keejLib
         double error = target - curr;
         return(pid.out(error));
     }
-} 
