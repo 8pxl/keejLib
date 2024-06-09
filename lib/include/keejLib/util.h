@@ -18,11 +18,11 @@ namespace keejLib {
         double curr();
     };
     
-    struct pt {
+    struct Pt {
         double x;
         double y;
         
-        double dist(pt a);
+        double dist(Pt a);
     };
     
     enum AngleType {
@@ -49,7 +49,7 @@ namespace keejLib {
     };
     
     struct Pose {
-        pt pos;
+        Pt pos;
         Angle heading;
     };
     
@@ -62,4 +62,5 @@ namespace keejLib {
     double toDeg(double rad);
     double toStandard(double deg);
     double fromStandard(double rad);
+    Angle absoluteAngleToPoint(const Pt& pos, const Pt& point);
 }
