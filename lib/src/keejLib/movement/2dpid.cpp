@@ -66,7 +66,7 @@ void Chassis::mtp(Pose target, double theta, double dLead, MotionParams params) 
     Exit timeout = exit::Timeout(params.timeout);
     PID linCont = PID(this -> linConsts);
     PID angCont = PID(this -> angConsts);
-    while (timeout.exited() || params.exit.exited({.error = pose.pos.dist(target.pos), })) {
+    while (timeout.exited() || params.exit.exited({.error = pose.pos.dist(target.pos), .pose = pose })) {
         double h = std::hypot(pose.pos.x - target.pos.x, pose.pos.y - target.pos.y);
         Pt carrot = {target.pos.x - (h * sin(theta) * dLead), target.pos.y - (h * cos(theta) * dLead)};
         dt -> spinVolts(pidMTPVel(target.pos, params, &linCont, &angCont));

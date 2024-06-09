@@ -6,6 +6,7 @@ namespace keejLib {
     
     struct exitParams {
         double error;
+        Pose pose;
     };
     
     class Exit {
@@ -32,6 +33,15 @@ namespace keejLib {
             public:
                 Range();
                 Range(double range, int timeout);
+                bool exited(exitParams params);
+        };
+        
+        class Perp: public Exit {
+            private:
+                Pose target;
+                double slope;
+            public:
+                Perp(Pose target);
                 bool exited(exitParams params);
         };
     }
