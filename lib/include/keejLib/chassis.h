@@ -1,59 +1,71 @@
 #pragma once
+#include "main.h"
+#include "pros/rotation.hpp"
 #include "util.h"
+#include "control.h"
 
-namespace lib
-{
-    class chassis
-    {
+namespace keejLib {
+    struct ChassConstants {
+        double horizWidth;
+        double vertWidth;
+        double trackDia;
+        double wheelDia;
+        double gearRatio;
+    };
+    
+    class DriveTrain : public pros::MotorGroup {
         private:
-            lib::diffy* chass;
-            pros::Imu* imu;
-            pros::ADIEncoder* horizTracker = nullptr;
-            pros::ADIEncoder* vertTracker = nullptr;
-            point pos = {0,0};
-            lib::robotConstants constants;
-            lib::accelConstants linear;
-            lib::accelConstants angular;
-            pros::Task* odomTask = nullptr;
-            double prevRotation = 0;
-
+            std::vector<std::int8_t> concat(const std::vector<std::int8_t>& left_ports, const std::vector<std::int8_t>& right_ports);
         public:
-            lib::odomType odom;
-            chassis(lib::diffy& mtrs, pros::Imu& imu) : chass(&mtrs), imu(&imu){}
-            chassis(lib::diffy& mtrs, pros::Imu& imu, lib::robotConstants constants, lib::accelConstants linear, lib::accelConstants angular) : chass(&mtrs), imu(&imu), constants(constants), linear(linear), angular(angular) {}
-            chassis(lib::diffy& mtrs, pros::Imu& imu, std::vector<int> encoderPorts, lib::robotConstants constants, lib::accelConstants linear, lib::accelConstants angular);
+            DriveTrain(const std::vector<std::int8_t>& left_ports, const std::vector<std::int8_t>& right_ports);
             
-            void updatePos();
-            void initTracking();
+            void spinVolts(int left, int right);
+            void spinVolts(std::pair<double, double> volts);
+            void spinLeft(int volts);
+            void spinRight(int volts);
 
-            //1dpid
-            lib::pid pidDrive(double target, double timeout, lib::pidConstants constants, char brake);
-            lib::pid pidTurn(double target, double timeout, lib::pidConstants constants, char brake);
-            lib::pid pidDrive(double target, double timeout, char brake, lib::pid cont);
-            lib::pid pidTurn(double target, double timeout, char brake, lib::pid cont);
-            // lib::pid keejTurn(double target, int timeout, lib::pidConstants constants, char brake);
-
-
-            void arcTurn(double target, double radius, double timeout, int dir, lib::pidConstants constants, double min, int endTime, char brake); 
-            void eulerTurn(double theta, double rate, double timeout, int dir, lib::pidConstants constants);
-
-            //1dmp
-            std::vector<double> asymTrapezoidalProfile(double dist, double maxSpeed, double accel, double decel, double start, double end);
-            void profiledDrive(double target, int endDelay, double start, double end);
-            void profiledTurn(double target, int dir, int endDelay);
-            void timedDrive(int time, int speed);
-
-
-            //2dpid
-            void driveAngle(double target, double heading, double timeout, lib::pidConstants lCons, lib::pidConstants acons);
-            std::vector<double> pidMTPVel(const point& target, double rotationBias, lib::pid* lCont, lib::pid* rCont);
-            void pidMoveTo(const point& target, double timeout, lib::pidConstants lConstants, lib::pidConstants 
-            rConstants, double rotationBias);
-            void boomerang(const point& target, double timeout, double dLead, double thetaEnd, double rotationBias, lib::pidConstants lConstants, lib::pidConstants rConstants);
-
-            //pp
-            lib::point targetPoint(lib::linearPath path, int lookAhead, int lineLookAhead, int lineIndex);
-            void moveToPurePursuit(lib::linearPath path, double lookAhead, int lineLookAhead, int finalTimeout, lib::pidConstants lConstants, lib::pidConstants rConstants, double rotationBias);
-
+            double getAvgVelocity();
+            double getAvgPosition();
+    };
+    
+    struct PrevOdom {
+        double vert;
+        double horiz;
+        Angle theta;
+    };
+    
+    struct MotionParams {
+        bool async;
+        int timeout;
+        double vMin;
+        Exit exit;
+        double mtpRotBias;
+    };
+    
+    class Chassis {
+        private: 
+            DriveTrain *dt;
+            pros::Imu *imu;
+            pros::Rotation *vertEnc;
+            pros::Rotation *horizEnc;
+            ChassConstants chassConsts;
+            PIDConstants linConsts;
+            PIDConstants angConsts;
+            Pose pose;
+            pros::Task* odomTask = nullptr;
+            PrevOdom prev;
+        public:
+            Chassis(DriveTrain *dt, ChassConstants constants);
+            void update();
+            void startTracking();
+            void setConstants(PIDConstants linear, PIDConstants angular);
+            void setLin(PIDConstants linear);
+            void setAng(PIDConstants angular);
+            
+            double getTheta();
+            std::pair<double, double> pidMTPVel(Pt target, MotionParams params, PID* lCont, PID* rCont);
+            void turn(double angle, MotionParams params);
+            void driveAngle(double dist, double angle, MotionParams params);
+            void mtp(Pose target, double theta, double dLead, MotionParams params);
     };
 }
