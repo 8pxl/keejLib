@@ -20,6 +20,7 @@ namespace keejLib {
             DriveTrain(const std::vector<std::int8_t>& left_ports, const std::vector<std::int8_t>& right_ports);
             
             void spinVolts(int left, int right);
+            void spinVolts(std::pair<double, double> volts);
             void spinLeft(int volts);
             void spinRight(int volts);
 
@@ -61,9 +62,9 @@ namespace keejLib {
             void setAng(PIDConstants angular);
             
             double getTheta();
-            std::pair<double, double> pidMTPVel(pt target, double rotationBias, PID* lCont, PID* rCont);
+            std::pair<double, double> pidMTPVel(Pt target, double rotationBias, PID* lCont, PID* rCont);
             void turn(double angle, MotionParams params);
             void driveAngle(double dist, double angle, MotionParams params);
-            void mtp(pose target, double theta, double dLead, MotionParams params);
+            void mtp(Pose target, double theta, double dLead, MotionParams params);
     };
 }

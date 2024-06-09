@@ -25,6 +25,9 @@ void DriveTrain::spinVolts(int left, int right) {
     _motor_group_mutex.give();
 }
 
+void DriveTrain::spinVolts(std::pair<double, double> volts) {
+    spinVolts(volts.first, volts.second);
+}
 double DriveTrain::getAvgVelocity() {
     std::vector<double> v = (get_actual_velocities());
     return (std::reduce(v.begin(), v.end()) / v.size());
