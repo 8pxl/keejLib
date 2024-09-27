@@ -1,6 +1,5 @@
 #include "main.h"
 #include "keejLib/lib.h"
-#include "pros/motors.hpp"
 
 // - globals
 void (*auton)();

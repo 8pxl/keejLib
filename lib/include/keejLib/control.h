@@ -11,8 +11,8 @@ namespace keejLib {
     
     class Exit {
         public:
-            virtual bool exited(exitParams);
-            virtual bool exited();
+            virtual ~Exit() = default;
+            virtual bool exited(exitParams params) = 0;
     };
     
     namespace exit {
@@ -22,7 +22,7 @@ namespace keejLib {
                 int timeout;
             public:
                 Timeout(int timeout);
-                bool exited();
+                bool exited(exitParams params) override;
         };
         
         class Range : public Exit {
@@ -33,7 +33,7 @@ namespace keejLib {
             public:
                 Range();
                 Range(double range, int timeout);
-                bool exited(exitParams params);
+                bool exited(exitParams params) override;
         };
         
         class Perp: public Exit {
@@ -42,7 +42,7 @@ namespace keejLib {
                 double slope;
             public:
                 Perp(Pose target);
-                bool exited(exitParams params);
+                bool exited(exitParams params) override;
         };
     }
     
@@ -53,6 +53,7 @@ namespace keejLib {
     class PID {
         private:
             double prevError, error, derivative, integral;
+            double prevTime = 0;
             PIDConstants constants;
         public:
             PID(){}

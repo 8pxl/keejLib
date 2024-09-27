@@ -1,23 +1,23 @@
+#pragma once
+
 #include "keejLib/lib.h"
-#include "keejLib/util.h"
+#include "util.h"
 
-using namespace keejLib;
-
-double toRad(double deg) {
+double keejLib::toRad(double deg) {
     return deg * M_PI / 180;
 }
 
-double toDeg(double rad) {
+double keejLib::toDeg(double rad) {
     return rad * 180 / M_PI;
 }
 
-int dirToSpin(double target, double current) {
+int keejLib::dirToSpin(double target, double current) {
     double d = (target - current);
     double diff = d < 0 ? d + 360 : d;
-    return (diff > 180 ? 1 : -1);
+    return (diff > 180 ? -1 : 1);
 }
 
-double angError(double target, double current) {
+double keejLib::angError(double target, double current) {
     double b = std::max(target, current);
     double s = std::min(target, current);
     double diff = b - s;
@@ -25,19 +25,26 @@ double angError(double target, double current) {
     return((diff <= 180 ? diff : (360-b) + s) * keejLib::dirToSpin(target, current));
 }
 
-double toStandard(double deg) {
+double keejLib::toStandard(double deg) {
     double a = 90 - deg;
     a = a < 0 ? 360 + a : a;
     return (keejLib::toRad(a));
 }
 
-double fromStandard(double rad) {
+double keejLib::fromStandard(double rad) {
     double a = M_PI/2 - rad;
-    a = a > 0 ? a : 2 * M_PI + a;
+    a = a >= 0 ? a : 2 * M_PI + a;
     return (keejLib::toDeg(a));
 }
 
-Angle::Angle(double angle, AngleType type) {
+double keejLib::reverseDir(double heading) {
+    return(fmod(heading + 180, 360));
+}
+
+keejLib::Angle::Angle() {
+    this -> angle_s = 0;
+}
+keejLib::Angle::Angle(double angle, AngleType type) {
     switch (type) {
         case AngleType::DEG:
             this -> angle_s = toRad(angle);
@@ -46,42 +53,46 @@ Angle::Angle(double angle, AngleType type) {
             this -> angle_s = angle;
             break;
         case AngleType::HEADING:
-            this -> angle_s = fromStandard(angle);
+            this -> angle_s = toStandard(angle);
     }
 }
 
-Angle Angle::operator+(Angle& other) {
+keejLib::Angle keejLib::Angle::operator+(Angle& other) {
     return Angle(this -> angle_s + other.angle_s, AngleType::RAD);
 }
 
-void Angle::operator+=(Angle& other) {
+void keejLib::Angle::operator+=(Angle& other) {
     this -> angle_s += other.angle_s;
 }
 
-Angle Angle::operator-(Angle& other) {
+keejLib::Angle keejLib::Angle::operator-(Angle& other) {
     return Angle(this -> angle_s - other.angle_s, AngleType::RAD);
 }
 
-Angle Angle::operator/(double b) {
+keejLib::Angle keejLib::Angle::operator/(double b) {
     return Angle(this -> angle_s / b, AngleType::RAD);
 }
 
-bool Angle::operator==(double b) {
+bool keejLib::Angle::operator==(double b) {
     return this -> angle_s == b;
 }
 
-double Angle::rad() {
+double keejLib::Angle::rad() {
     return angle_s;
 }
 
-double Angle::deg() {
+double keejLib::Angle::deg() {
     return angle_s * 180 / M_PI;
 }
 
-double Angle::heading() {
-   return toStandard(angle_s);
+double keejLib::Angle::heading() {
+   return fromStandard(angle_s);
 }
 
-double Angle::error(Angle current) {
+double keejLib::Angle::error(Angle current) {
     return angError(heading(), current.heading());
 } 
+
+keejLib::Angle keejLib::Angle::reverseDir() {
+    return Angle(keejLib::reverseDir(this->heading()), HEADING);
+}
