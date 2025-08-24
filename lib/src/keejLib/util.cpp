@@ -1,12 +1,13 @@
 #include "keejLib/lib.h"
-#include "keejLib/util.h"
+#include "pros/rtos.hpp"
+
 
 namespace keejLib {
 
 EMA::EMA(double ka): ka(ka){}
 
 double EMA::out(double val) {
-    last = val * ka + val * (1 - ka);
+    last = val * ka + last * (1 - ka);
     return last;
 }
 
@@ -28,11 +29,16 @@ Angle absoluteAngleToPoint(const Pt &pos, const Pt &point) {
         t = M_PI/2;
     }
     
-    t = keejLib::toDeg(t);
+    t = toDeg(t);
     t = t >= 0 ? t : 360+t;
     return (Angle(t, HEADING));
 }
 
+Color oppositeColor(Color c) {
+    if (c == blue) return red;
+    if (c == red) return blue;
+    return none;
+}
 Stopwatch::Stopwatch() {
     start = pros::millis();
 }
@@ -45,6 +51,31 @@ int Stopwatch::elapsed() {
     return pros::millis() - start;
 }
 
+Timer::Timer(int timeout) {
+    set(timeout);
+}
+
+void Timer::reset() {
+    startTime = pros::millis();
+}
+
+void Timer::set(int timeout) {
+    this->timeout = timeout;
+}
+
+void Timer::start() {
+    if (live) return;
+    startTime = pros::millis();
+    live = true;
+}
+void Timer::stop() {
+    live = false;
+}
+
+bool Timer::done() {
+    if (!live) return false;
+    return (pros::millis() - startTime) > timeout;
+}
 //credit: lemlib
 double curvature(Pose pose, Pose other) {
     // calculate whether the pose is on the left or right side of the circle
@@ -76,4 +107,31 @@ Pt triangulate(Pose a, Pose b) {
 Pt translate(Pt a) {
     return {-a.x, a.y};
 }
+
+double calculateMaxSlipSpeed(const Pose& pose, const Pt& target, double drift) {
+    double radius = 1 / fabs(curvature(pose, {target, Angle(0, RAD)}));
+    if (drift == 0) {
+        return 127;
+    } else {
+        return sqrt(drift * radius * 9.8);
+    }
+}
+
+int computeSide(const Pt& curr, const Pt& target, Angle heading) {
+    double adjHeading = heading.rad();
+    if (adjHeading > M_PI) {
+        adjHeading = -(2 * M_PI - adjHeading);
+    }
+    
+    double m = tan(adjHeading);
+    
+    int side = (curr.y < (-1 / m) * (curr.x - target.x) + target.y) ? 1 : -1;
+    
+    if (adjHeading < 0) {
+        side = -side;
+    }
+    
+    return side;
+}
+
 }

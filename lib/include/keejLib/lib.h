@@ -6,3 +6,4 @@
 #include "control.h"
 #include "util.h"
 #include "piston.h"
+#include "bimap.h"

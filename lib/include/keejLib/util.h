@@ -1,9 +1,11 @@
 #pragma once
 #include <string>
 #include <vector>
+// #include "Eigen/Eigen"
 namespace keejLib {
     
     #define ALLBUTTONS {pros::E_CONTROLLER_DIGITAL_L1, pros::E_CONTROLLER_DIGITAL_L2, pros::E_CONTROLLER_DIGITAL_R1, pros::E_CONTROLLER_DIGITAL_R2, pros::E_CONTROLLER_DIGITAL_UP, pros::E_CONTROLLER_DIGITAL_DOWN, pros::E_CONTROLLER_DIGITAL_LEFT, pros::E_CONTROLLER_DIGITAL_RIGHT, pros::E_CONTROLLER_DIGITAL_X, pros::E_CONTROLLER_DIGITAL_B, pros::E_CONTROLLER_DIGITAL_Y, pros::E_CONTROLLER_DIGITAL_A}
+    #define maxslew 254
     typedef void(*fptr)();
     struct Autons{std::vector<fptr> autonsList; std::vector<std::string> names; };
     #define neg(a) 360-a
@@ -36,9 +38,12 @@ namespace keejLib {
     };
     
     enum Color {
-        blue,
-        red
+        red = 0,
+        blue = 1,
+        none = 2,
     };
+
+    Color oppositeColor(Color c);
     
     class Stopwatch {
         private:
@@ -47,6 +52,20 @@ namespace keejLib {
             Stopwatch();
             void reset();
             int elapsed();
+    };
+
+    class Timer {
+        private: 
+            int startTime;
+            int timeout;
+            bool live = false;
+        public:
+            Timer(int timeout);
+            void reset();
+            void start();
+            void stop();
+            void set(int timeout);
+            bool done();
     };
     
     class EMA {
@@ -94,6 +113,14 @@ namespace keejLib {
     struct Pose {
         Pt pos;
         keejLib::Angle heading;
+        // Pose() : pos({0, 0}), heading(keejLib::Angle(0, HEADING)) {}
+        // Pose(Pt pos, Angle angle) : pos(pos), heading(angle) {}
+        // Pose(Pt pos, double heading) : pos(pos), heading(Angle(heading, HEADING)) {}
+    };
+    
+    struct ChassVelocities {
+        double left;
+        double right;
     };
     
     enum CompState {
@@ -116,8 +143,15 @@ namespace keejLib {
     double reverseDir(double heading);
     Angle absoluteAngleToPoint(const Pt& pos, const Pt& point);
     double curvature(Pose pose, Pose other);
-    
-    Pt triangulate(Pose a, Pose b);
+    double calculateMaxSlipSpeed(const Pose& pose, const Pt& target, double drift);
+    double mtpAngleError(const Pose& pose, const Pt& target, int dir);
+    int computeSide(const Pt& curr, const Pt& target, Angle heading);
+
+    template <typename T>
+    bool inRange(T val, std::pair<T, T> range) {
+        return (range.first <= val && val <= range.second);
+    }
+    Pt triangulate(Pose a, Pose b); 
     
     Pt translate(Pt a);
 }

@@ -4,11 +4,11 @@ namespace keejLib {
     class Pis
     {
         private:
-            std::vector<pros::ADIDigitalOut> pistons;
+            std::vector<pros::adi::DigitalOut> pistons;
             bool state;
         
         public:
-            Pis(std::vector<pros::ADIDigitalOut> p, bool s);
+            Pis(std::vector<pros::adi::DigitalOut> p, bool s);
     
             void toggle();
             void setState(bool iState);

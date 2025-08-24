@@ -25,4 +25,7 @@ double PID::getDerivative() {
     return derivative;
 }
 
+void PID::resetIntegral() {
+    integral = 0;
+}
 }

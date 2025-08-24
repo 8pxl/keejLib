@@ -18,8 +18,8 @@ int keejLib::dirToSpin(double target, double current) {
 }
 
 double keejLib::angError(double target, double current) {
-    double b = std::max(target, current);
-    double s = std::min(target, current);
+    double b = std::fmax(target, current);
+    double s = std::fmin(target, current);
     double diff = b - s;
     
     return((diff <= 180 ? diff : (360-b) + s) * keejLib::dirToSpin(target, current));
@@ -39,6 +39,13 @@ double keejLib::fromStandard(double rad) {
 
 double keejLib::reverseDir(double heading) {
     return(fmod(heading + 180, 360));
+}
+
+double keejLib::mtpAngleError(const Pose& pose, const Pt& target, int dir) {
+    Angle currHeading = pose.heading;
+    Angle targetHeading = absoluteAngleToPoint(pose.pos, target);
+    if (dir < 0) targetHeading = Angle(reverseDir(targetHeading.heading()), HEADING);
+    return targetHeading.error(currHeading);
 }
 
 keejLib::Angle::Angle() {
