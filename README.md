@@ -1,6 +1,4 @@
 # keejLib !!
-the best lib for pros fr
-
 
 <font size = 6>**features** </font>
 -
